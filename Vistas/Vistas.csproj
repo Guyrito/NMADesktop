@@ -1,0 +1,119 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Recursos\Iconos\BLANCO\icons8-exit-96.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-add-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-add-male-user-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-ball-point-pen-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-black-tie-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-box-important-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-chevron-down-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-chevron-up-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-clock-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-manager-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-search-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-toggle-off-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-toggle-on-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\icons8-user-groups-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-add-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-add-male-user-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-administrator-male-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-ball-point-pen-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-black-tie-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-box-important-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-chevron-down-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-chevron-up-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-clock-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-exit-32.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-search-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-toggle-off-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-toggle-on-50.png" />
+    <None Remove="Recursos\Iconos\GRIS\PURPURA\icons8-user-groups-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-add-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-add-male-user-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-administrator-male-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-ball-point-pen-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-black-tie-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-box-important-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-chevron-down-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-chevron-up-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-clock-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-exit-32.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-search-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-toggle-off-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-toggle-on-50.png" />
+    <None Remove="Recursos\Iconos\PURPURA\icons8-user-groups-50.png" />
+    <None Remove="Recursos\maxresdefault.jpg" />
+    <None Remove="Recursos\pngegg.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Controladores\Controladores.csproj" />
+    <ProjectReference Include="..\PersistenciaBD\PersistenciaBD.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Recursos\Iconos\BLANCO\icons8-exit-96.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-add-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-add-male-user-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-ball-point-pen-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-black-tie-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-box-important-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-chevron-down-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-chevron-up-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-clock-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-manager-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-search-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-toggle-off-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-toggle-on-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\icons8-user-groups-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-add-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-add-male-user-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-administrator-male-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-ball-point-pen-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-black-tie-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-box-important-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-chevron-down-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-chevron-up-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-clock-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-exit-32.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-search-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-toggle-off-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-toggle-on-50.png" />
+    <Resource Include="Recursos\Iconos\GRIS\PURPURA\icons8-user-groups-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-add-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-add-male-user-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-administrator-male-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-ball-point-pen-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-black-tie-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-box-important-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-chevron-down-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-chevron-up-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-clock-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-exit-32.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-search-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-toggle-off-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-toggle-on-50.png" />
+    <Resource Include="Recursos\Iconos\PURPURA\icons8-user-groups-50.png" />
+    <Resource Include="Recursos\maxresdefault.jpg" />
+    <Resource Include="Recursos\pngegg.png" />
+  </ItemGroup>
+
+</Project>
