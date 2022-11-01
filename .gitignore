@@ -17,13 +17,13 @@
 mono_crash.*
 
 # Projecto personal
-
+[Cc]ontroladores/*.[Cc]onfig
+[Cc]ontroladores/*.[Cc]ache
+[Vv]istas/*.[Cc]onfig
+[Vv]istas/*.[Cc]ache
 
 # ConexionBD
-.[Cc]onfig
-.[Ee]dmx
-
-
+[Pp]ersistenciaBD/*
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
