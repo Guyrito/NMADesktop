@@ -23,7 +23,8 @@ mono_crash.*
 [Vv]istas/*.[Cc]ache
 
 # ConexionBD
-[Pp]ersistenciaBD/*
+[Pp]ersistenciaBD/*.
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
