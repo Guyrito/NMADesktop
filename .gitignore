@@ -17,10 +17,7 @@
 mono_crash.*
 
 # Projecto personal
-[Cc]lases/
-[Cc]ontroladores/
-[Pp]ersistenciaBD/
-[Vv]istas/
+
 
 # ConexionBD
 .[Cc]onfig
