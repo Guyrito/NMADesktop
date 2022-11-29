@@ -10,7 +10,7 @@
     <ToggleButton x:Name="ToggleBtnVisita"  
                   Background="#4E16D1" 
                   Style="{DynamicResource MetroCircleToggleButtonStyle}" 
-                  Checked="ToggleBtnVisita_Checked">
+                  Checked="ToggleBtnVisita_Checked" Unchecked="ToggleBtnVisita_Unchecked">
         <DockPanel Width="174"
                    Height="72"
                    Margin="1,1,1,1"
@@ -36,7 +36,8 @@
                                 FontWeight="Bold"
                                 SelectedDateTime="{Binding DisplayHoraVisita, TargetNullValue=''}"
                                 SelectedTimeFormat="Short"
-                                Height="36"/>
+                                Height="36"
+                                Culture="es-CL"/>
             </StackPanel>
         </DockPanel>
     </ToggleButton>

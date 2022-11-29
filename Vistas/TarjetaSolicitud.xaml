@@ -155,13 +155,13 @@
                                   BorderBrush="#FF4E16D1"
                                   BorderThickness="1"
                                   Foreground="#FF4E16D1"
-                                  Content="ACEPTAR"/>
+                                  Content="ACEPTAR" Click="tileAceptarSolicitud_Click"/>
                         <mah:Tile x:Name="tileRechazarSolicitud"
                                   Height="25"
                                   Width="100" Margin="5,61,5,-55"
                                   Background="#FF4E16D1"
                                   Foreground="White"
-                                  Content="RECHAZAR"/>
+                                  Content="RECHAZAR" Click="tileRechazarSolicitud_Click"/>
                     </Grid>
                 </StackPanel>
             </DockPanel>

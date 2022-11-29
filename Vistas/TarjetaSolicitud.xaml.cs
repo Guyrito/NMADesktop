@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PersistenciaBD;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,7 @@ namespace Vistas
             InitializeComponent();
             DataContext = this;
         }
+        public int idSolicitud { get; set; }
         public string DisplayNombreEmpresa { get; set; }
         public string DisplayRutEmpresa { get; set; }
         public string DisplayNombreGerente { get; set; }
@@ -53,6 +55,46 @@ namespace Vistas
                 ucTarjetaSolicitud.Height.Equals(107.837837837838);
                 dockPanelCentral.Visibility = Visibility.Collapsed;
             }
+        }
+        public void ActualizarAsesoria(int idSolicitud, string EstadoNuevo_Solicitud)
+        {
+            using BD_NMAEntities contextActualizar = new();
+            contextActualizar.crudUpdate
+                (
+                    nombreTabla: "Solicitud",
+                    nombreColumna: "Estado_solicitud",
+                    nuevoDato: EstadoNuevo_Solicitud,
+                    id: idSolicitud
+
+                );
+            contextActualizar.SaveChanges();
+        }
+
+        private void tileAceptarSolicitud_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show("¿Está seguro de que desea aceptar esta solicitud? \nDe ser así se asignará a su perfil", "Pregunta de confirmación", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                ActualizarAsesoria(idSolicitud, "Aceptada");
+                MessageBox.Show("Solicitud aceptada.");
+            }
+            else if (messageBoxResult == MessageBoxResult.No)
+            {
+            }
+        }
+
+        private void tileRechazarSolicitud_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show("¿Está seguro de que desea rechazar esta solicitud? \nDe ser así no podrá visualizarla nuevamente.", "Pregunta de confirmación", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                ActualizarAsesoria(idSolicitud, "Rechazada");
+                MessageBox.Show("Solicitud rechazada.");
+            }
+            else if (messageBoxResult == MessageBoxResult.No)
+            {
+            }
+            
         }
     }
 }

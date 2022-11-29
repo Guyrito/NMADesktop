@@ -7,7 +7,7 @@
                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  xmlns:local="clr-namespace:Vistas"
                  mc:Ignorable="d"
-                 Title="VentanaNuevaCapacitacion" 
+                 Title="NMA - Nueva capacitacion" 
                  Height="450" 
                  Width="830"
                  WindowStyle="None"
@@ -60,7 +60,9 @@
                              Background="#F5F5F5"
                              BorderBrush="#E0E0E0"
                              BorderThickness="0,0,0,2"
-                             Foreground="Black"/>
+                             Foreground="Black"
+                             TextWrapping="Wrap"
+                             MaxLength="50"/>
                     <Label Content="Cant. Asistentes"
                            Height="30"
                            Margin="25,50,650,2"
@@ -71,7 +73,9 @@
                              Background="#F5F5F5"
                              BorderBrush="#E0E0E0"
                              BorderThickness="0,0,0,2"
-                             Foreground="Black"/>
+                             Foreground="Black"
+                             TextWrapping="Wrap"
+                             MaxLength="3" TextChanged="txtBoxCantidadAsistentes_TextChanged"/>
                     <Label Content="Descripción"
                            Grid.Row="1"
                            Width="130"
@@ -83,7 +87,9 @@
                              Background="#F5F5F5"
                              BorderBrush="#E0E0E0"
                              BorderThickness="0,0,0,2" Grid.RowSpan="2"
-                             Foreground="Black"/>
+                             Foreground="Black"
+                             TextWrapping="Wrap"
+                             MaxLength="300"/>
                     <Label Content="Material(es)"
                            Grid.Row="2"
                            Width="130"
@@ -95,7 +101,9 @@
                              Background="#F5F5F5"
                              BorderBrush="#E0E0E0"
                              BorderThickness="0,0,0,2"
-                             Foreground="Black"/>
+                             Foreground="Black"
+                             TextWrapping="Wrap"
+                             MaxLength="160"/>
                     <Label Content="Fecha Capacitación"
                            Width="130"
                            Height="30" Margin="499,2,181,50"
@@ -112,7 +120,8 @@
                                     Height="30"
                                     Width="150" 
                                     Margin="640,50,20,2"
-                                    SelectedTimeFormat="Short"/>
+                                    SelectedTimeFormat="Short"
+                                    Culture="es-CL"/>
                     <mah:Tile x:Name="TileGuardar"  
                               Grid.Row="2"
                               Height="40"

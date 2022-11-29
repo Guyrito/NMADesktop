@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PersistenciaBD;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +29,8 @@ namespace Vistas
             InitializeComponent();
             DataContext = this;
         }
+        public static VistaProfesional objetoVistaProfesionalExistente { get; set; }
+        public int idActividadMejora { get; set; }
         public string DisplayNombreEmpresa { get; set; }
         public string DisplayRutEmpresa { get; set; }
         public string DisplayNombreGerente { get; set; }
@@ -43,7 +47,6 @@ namespace Vistas
             dockPanelInferior.Visibility = Visibility.Collapsed;
             ucTarjetaRevision.Height.Equals(89.775);
         }
-
         private void BtnUpdDown_Click(object sender, RoutedEventArgs e)
         {
             if (dockPanelMedio.Visibility.Equals(Visibility.Collapsed)
@@ -60,6 +63,31 @@ namespace Vistas
                 dockPanelMedio.Visibility = Visibility.Collapsed;
                 dockPanelInferior.Visibility = Visibility.Collapsed;
             }
+        }
+
+        public int AsignacionID()
+        {
+            int idProfesional = 0;
+            objetoVistaProfesionalExistente.idProfesionalPerfilActual = idProfesional;
+            Debug.WriteLine(idProfesional);
+            return idProfesional;
+        }
+
+        public void TomarActividadMejora(int idProfesionalRemitente, int idActividadSeleccionada)
+        {
+            using BD_NMAEntities contextActividadMejora = new();
+            contextActividadMejora.crudUpdate
+                (
+                    nombreTabla: "actividad de mejora",
+                    nombreColumna: "Remitente",
+                    nuevoDato: idProfesionalRemitente.ToString(),
+                    id: idActividadSeleccionada
+                );
+            contextActividadMejora.SaveChanges();
+        }
+        private void TileTomar_Click(object sender, RoutedEventArgs e)
+        {
+            AsignacionID();
         }
     }
 }

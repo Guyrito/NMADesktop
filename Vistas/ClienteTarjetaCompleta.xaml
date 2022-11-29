@@ -251,24 +251,6 @@
                                     Margin="207,28,0,0">
                             <ScrollViewer Height="89" Width="200">
                                 <StackPanel x:Name="StckActMejora">
-                                    <mah:Tile x:Name="TileActMejora"  
-                                          Height="39" 
-                                          Width="180"
-                                          Background="Transparent"
-                                          BorderBrush="#FF4E16D1"
-                                          BorderThickness="1.5">
-                                        <StackPanel Height="39"
-                                                    Width="180">
-                                            <TextBlock HorizontalAlignment="Center"
-                                                       Grid.Column="3"
-                                                       FontSize="12" 
-                                                       Width="180" 
-                                                       Height="39"
-                                                       Foreground="Black"
-                                                       TextAlignment="Center"
-                                                       Text="{Binding DisplayActMejora, TargetNullValue=''}" />
-                                        </StackPanel>
-                                    </mah:Tile>
                                 </StackPanel>
                             </ScrollViewer>
                         </StackPanel>

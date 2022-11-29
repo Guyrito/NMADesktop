@@ -1,6 +1,8 @@
-﻿using System;
+﻿using PersistenciaBD;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -77,22 +79,32 @@ namespace Vistas
         private void BtnAgregarVisita_Click(object sender, RoutedEventArgs e)
         {
             VentanaNuevaVisita ventanaNuevaVisita = new();
+            ventanaNuevaVisita.idCliente = ReceiveIdCliente;
+            ventanaNuevaVisita.idProfesional = ReceiveIdProfesional;
             ventanaNuevaVisita.ShowDialog();
         }
         private void BtnAgregarCapacitacion_Click(object sender, RoutedEventArgs e)
         {
             VentanaNuevaCapacitacion ventanaNuevaCapacitacion = new();
+            ventanaNuevaCapacitacion.idCliente = ReceiveIdCliente;
+            ventanaNuevaCapacitacion.idProfesional = ReceiveIdProfesional;
             ventanaNuevaCapacitacion.ShowDialog();
+            
         }
         private void BtnAgregarAsesoria_Click(object sender, RoutedEventArgs e)
         {
             VentanaNuevaAsesoria ventanaNuevaAsesoria = new();
+            ventanaNuevaAsesoria.idCliente = ReceiveIdCliente;
+            ventanaNuevaAsesoria.idProfesional = ReceiveIdProfesional;
+            ventanaNuevaAsesoria.CargarRazonAsesorias(ReceiveIdProfesional, ReceiveIdCliente);
             ventanaNuevaAsesoria.ShowDialog();
         }
         private void BtnAgregarActMejora_Click(object sender, RoutedEventArgs e)
         {
             VentanaNuevaActMejora ventanaNuevaActMejora = new();
-            ventanaNuevaActMejora.ShowDialog();
+            ventanaNuevaActMejora.idCliente = ReceiveIdCliente;
+            ventanaNuevaActMejora.idProfesional = ReceiveIdProfesional;
+            ventanaNuevaActMejora.ShowDialog(); 
         }
     }
 }

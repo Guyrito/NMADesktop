@@ -61,6 +61,18 @@
                                                            VerticalAlignment="Center"/>
                         </Grid>
                     </mah:Tile>
+                    <mah:Tile x:Name="TileQuitarItem"  Grid.Row="2"
+                              Width="21"
+                              Height="19"
+                              HorizontalAlignment="Left" 
+                              Background="Black" 
+                              RenderTransformOrigin="0.571,-0.39" Margin="625,34,0,116" Click="TileQuitarItem_Click">
+                        <Grid>
+                            <iconPacks:PackIconForkAwesome Kind="Minus" 
+                                                           HorizontalAlignment="Center" 
+                                                           VerticalAlignment="Center"/>
+                        </Grid>
+                    </mah:Tile>
                     <Label Content="Nombre Cliente"
                            Grid.Row="0"
                            Height="30" 
@@ -72,6 +84,7 @@
                              Margin="405,16,195,19"
                              Background="#F5F5F5"
                              BorderBrush="#E0E0E0"
+                             IsEnabled="False"
                              Text="{Binding DisplayNombreCliente, TargetNullValue=''}"
                              BorderThickness="0,0,0,2"
                              Foreground="Black"/>
@@ -85,6 +98,8 @@
                                 Grid.Row="1" 
                                 Margin="405,10,195,59"
                                 Background="#F5F5F5"
+                                SelectedDateFormat="Short"
+                                IsEnabled="False"
                                 Text="{Binding DisplayFechaVisita, TargetNullValue=''}"
                                 Foreground="Black"/>
                     <Label Content="Hora Visita"
@@ -97,6 +112,9 @@
                                     Margin="405,47,195,22"
                                     Background="#F5F5F5"
                                     Foreground="Black"
+                                    SelectedTimeFormat="Short"
+                                    Culture="es-CL"
+                                    IsEnabled="False"
                                     SelectedDateTime="{Binding DisplayHoraVisita, TargetNullValue=''}"/>
                     <ScrollViewer Grid.Row="1"
                                   Width="426"
@@ -106,7 +124,8 @@
                                    HorizontalAlignment="Center"/>
                         </StackPanel>
                     </ScrollViewer>
-                    <mah:Tile Grid.Row="2"
+                    <mah:Tile x:Name="TileGuardar"  
+                              Grid.Row="2"
                               Height="40"
                               Width="100"
                               HorizontalAlignment="Left" Margin="696,90,0,39"
@@ -114,7 +133,7 @@
                               BorderBrush="#FF4E16D1"
                               BorderThickness="1"
                               Content="GUARDAR"
-                              Foreground="#FF4E16D1"/>
+                              Foreground="#FF4E16D1" Click="TileGuardar_Click"/>
                     <mah:Tile x:Name="TileAtras"  Grid.Row="2"
                               Height="20"
                               Width="100"

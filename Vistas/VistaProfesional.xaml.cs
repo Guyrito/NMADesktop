@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -34,9 +35,12 @@ namespace Vistas
             scrlViewerPrincipal.Visibility = Visibility.Visible;
             BtnCheckList.Visibility = Visibility.Collapsed;
             BtnCasoAsesoria.Visibility = Visibility.Collapsed;
-            //btnCheckList.IsEnabled = false;
             BtnCasoAsesoria.IsEnabled = false;
+            BtnCheckList.IsEnabled = false;
         }
+        public int idClienteSeleccionado;
+        public int idProfesionalPerfilActual;
+        public int idActividadSeleccionada;
         private void TileSalir_Click(object sender, RoutedEventArgs e)
         {
             MainWindow login = new();
@@ -65,116 +69,112 @@ namespace Vistas
             TabItemOpciones3.Visibility = Visibility.Collapsed;
             stckPanelTarjetas.Children.Clear();
         }
-        public static ClienteTarjetaCompleta CrearTarjetaCliente(int idGerente)
+        public static ClienteTarjetaCompleta CrearTarjetaCliente(int idCliente)
         {
             ServiceActividad serviceActividad = new();
             ServiceActMejora serviceActMejora = new();
+            ServiceCapacitacion serviceCapacitacion = new();
             ServiceAsesoria serviceAsesoria = new();
             ServiceCliente serviceCliente = new();
             ServiceGerente serviceGerente = new();
             ServiceProfesional serviceProfesional = new();
-
-            var idCliente = serviceGerente.GetEntity(idGerente).Cliente_id_clien;
-
+            try
+            {
+                var idGerente = serviceGerente.GetEntity(idCliente).id_gerente;
 #pragma warning disable CS8604 // Posible argumento de referencia nulo
-            var idProfesional = serviceCliente.GetEntity(idCliente).Profesional_id_prof;
+                var idProfesional = serviceCliente.GetEntity(idCliente).Profesional_id_prof;
 #pragma warning restore CS8604 // Posible argumento de referencia nulo
 
-            ClienteTarjetaCompleta clienteTarjetaCompleta = new()
-            {
-                ReceiveIdCliente = serviceCliente.GetEntity(idCliente).id_emp,
-                ReceiveIdProfesional = serviceProfesional.GetEntity(idProfesional).id_prof,
-
-                DisplayEmpresa = serviceCliente.GetEntity(idCliente).Nombre_emp,
-                DisplayRutEmpresa = serviceCliente.GetEntity(idCliente).Rut_emp,
-                DisplayGerente = serviceGerente.GetEntity(idGerente).Nombre_gerente
-            };
-            string nombre = serviceProfesional.GetEntity(idProfesional).Nombre_prof;
-            string apellido = serviceProfesional.GetEntity(idProfesional).Apellido_prof;
-            string nombreProf = nombre + " " + apellido;
-            clienteTarjetaCompleta.DisplayProfNombre = nombreProf;
-            clienteTarjetaCompleta.DisplayMailGerente = serviceGerente.GetEntity(idGerente).Mail_gerente;
-            clienteTarjetaCompleta.DisplayTelefonoEmpresa = serviceCliente.GetEntity(idCliente).Fono_cliente;
-            clienteTarjetaCompleta.DisplayDireccion = serviceCliente.GetEntity(idCliente).Direccion_emp;
-            //---------------------------------------------------------------------------------------------
-            foreach (Actividad _actividades in serviceActividad.GetEntities())
-            {
-                //Debug.WriteLine("idActividad es "+idActividad);
-                //Debug.WriteLine("idCliente es "+idCliente);
-                //No me trae la id=1
-                if (idCliente == _actividades.Cliente_id_emp)
+                ClienteTarjetaCompleta clienteTarjetaCompleta = new()
                 {
-                    var tipoAct = _actividades.Tipo_actividad;
-                    //Debug.WriteLine("tipo act es " + tipoAct + "idCliente es " + idCliente);
-                    //Debug.WriteLine("Comparamos con " + _actividades.Tipo_actividad);
-                    if (tipoAct == "Visita")
+                    ReceiveIdCliente = serviceCliente.GetEntity(idCliente).id_emp,
+                    ReceiveIdProfesional = serviceProfesional.GetEntity(idProfesional).id_prof,
+
+                    DisplayEmpresa = serviceCliente.GetEntity(idCliente).Nombre_emp,
+                    DisplayRutEmpresa = serviceCliente.GetEntity(idCliente).Rut_emp,
+                    DisplayGerente = serviceGerente.GetEntity(idGerente).Nombre_gerente
+                };
+                string nombre = serviceProfesional.GetEntity(idProfesional).Nombre_prof;
+                string apellido = serviceProfesional.GetEntity(idProfesional).Apellido_prof;
+                string nombreProf = nombre + " " + apellido;
+                clienteTarjetaCompleta.DisplayProfNombre = nombreProf;
+                clienteTarjetaCompleta.DisplayMailGerente = serviceGerente.GetEntity(idGerente).Mail_gerente;
+                clienteTarjetaCompleta.DisplayTelefonoEmpresa = serviceCliente.GetEntity(idCliente).Fono_cliente;
+                clienteTarjetaCompleta.DisplayDireccion = serviceCliente.GetEntity(idCliente).Direccion_emp;
+                //---------------------------------------------------------------------------------------------
+                foreach (Actividad _actividades in serviceActividad.GetEntities())
+                {
+                    if (idCliente == _actividades.Cliente_id_emp)
                     {
-                        StackVisita stackVisita = new();
-                        Debug.WriteLine("__________________________________");
-                        Debug.WriteLine("El tipo de act es " + tipoAct + " idAct es " + idCliente);
-                        Debug.WriteLine("__________________________________");
-                        stackVisita.DisplayFechaVisita = _actividades.Fecha_act.ToString();
-                        stackVisita.DisplayHoraVisita = _actividades.Hora_act.ToString();
-                        clienteTarjetaCompleta.StckVisita.Children.Add(stackVisita);
-                        //Debug.WriteLine("Visita " + tipoAct);
-                        //Debug.WriteLine(visita);
-                        //Debug.WriteLine("La visita n "+idActividad+" es el día "+date+" a la hora "+time);
-                    }
-                    if (tipoAct == "Capacitación")
-                    {
-                        StackCapacitacion stackCapacitacion = new();
-                        Debug.WriteLine("__________________________________");
-                        Debug.WriteLine("El tipo de act es " + tipoAct + " idAct es " + idCliente);
-                        Debug.WriteLine("__________________________________");
-                        Debug.WriteLine("__________________________________");
-                        //stackCapacitacion.displayNombreCapacitacion = serviceCapacitacion.GetEntity(_actividades.id_act).Nombre_cap;
-                        //stackCapacitacion.displayFechaCapacitacion = _actividades.Fecha_act.ToString();
-                        //stackCapacitacion.displayHoraCapacitacion = _actividades.Hora_act.ToString();
-                        //clienteTarjetaCompleta.stckCapacitacion.Children.Add(stackCapacitacion);
-                        //Debug.WriteLine("Capacitacion "+tipoAct);
-                        //Debug.WriteLine("La capacitacion n " + idActividad +" de nombre "+ name +" es el día " + date + " a la hora " + time);
-                    }
-                    if (tipoAct == "Act Mejora")
-                    {
-                        Debug.WriteLine("__________________________________");
-                        Debug.WriteLine("El tipo de act es " + tipoAct + " idAct es " + idCliente);
-                        Debug.WriteLine("__________________________________");
-                        //Debug.WriteLine(tipoAct);
-                        //Debug.WriteLine(idActividad);
-                        clienteTarjetaCompleta.DisplayActMejora = serviceActMejora.GetEntity(idCliente).Nombre_act_mejora;
-                        //Debug.WriteLine("La Asesoria n " + idActividad + " de nombre " + name);
-                        //Debug.WriteLine("Act Mejora " + tipoAct);
-                    }
-                    //Debug.WriteLine("Esto es una " + tipoAct + " Comparada a Asesoria" + tipoAct.Equals("Asesoria"));
-                    if (tipoAct == "Asesoria")
-                    {
-                        StackAsesoria stackAsesoria = new();
-                        Debug.WriteLine("__________________________________");
-                        Debug.WriteLine("El tipo de act es " + tipoAct + " idAct es " + idCliente);
-                        Debug.WriteLine("__________________________________");
-                        //Debug.WriteLine(tipoAct);
-                        //Debug.WriteLine(idActividad);
-                        stackAsesoria.DisplayRazonAsesoria = serviceAsesoria.GetEntity(_actividades.id_act).Razon_ases;
-                        stackAsesoria.DisplayFechaAsesoria = _actividades.Fecha_act.ToString();
-                        stackAsesoria.DisplayHoraAsesoria = _actividades.Hora_act.ToString();
-                        clienteTarjetaCompleta.StckAsesoria.Children.Add(stackAsesoria);
-                        //Debug.WriteLine(asesoria);
-                        //var name = serviceAsesoria.GetEntity(_actividades.id_act).Razon_ases;
-                        //var date = _actividades.Fecha_act.ToString();
-                        //var time = _actividades.Hora_act.ToString();
-                        //Debug.WriteLine("La "+name+" es a la fecha " + date+ " en la hora "+time);
-                        //Debug.WriteLine("Asesoria " + tipoAct);
+                        var tipoAct = _actividades.Tipo_actividad;
+                        if (tipoAct == "Visita")
+                        {
+                            StackVisita stackVisita = new()
+                            {
+                                DisplayFechaVisita = _actividades.Fecha_act.ToString(),
+                                DisplayHoraVisita = _actividades.Hora_act.ToString(),
+                                idCliente = serviceCliente.GetEntity(idCliente).id_emp,
+                                idProfesional = serviceProfesional.GetEntity(idProfesional).id_prof,
+                                idVisita_Actividad = _actividades.id_act
+                            };
+                            clienteTarjetaCompleta.StckVisita.Children.Add(stackVisita);
+                        }
+                        if (tipoAct == "Capacitación")
+                        {
+                            StackCapacitacion stackCapacitacion = new()
+                            {
+                                DisplayNombreCapacitacion = serviceCapacitacion.GetEntity(_actividades.id_act).Nombre_cap,
+                                DisplayFechaCapacitacion = _actividades.Fecha_act.ToString(),
+                                DisplayHoraCapacitacion = _actividades.Hora_act.ToString()
+                            };
+                            clienteTarjetaCompleta.StckCapacitacion.Children.Add(stackCapacitacion);
+                        }
+                        if (tipoAct == "Actividad de mejora")
+                        {
+                            StackActMejora stackActMejora = new()
+                            {
+                                DisplayActMejora = serviceActMejora.GetEntity(_actividades.id_act).Nombre_act_mejora
+                            };
+                            clienteTarjetaCompleta.StckActMejora.Children.Add(stackActMejora);
+                        }
+                        if (tipoAct == "Asesoría")
+                        {
+                            StackAsesoria stackAsesoria = new()
+                            {
+                                DisplayRazonAsesoria = serviceAsesoria.GetEntity(_actividades.id_act).Razon_ases,
+                                DisplayFechaAsesoria = _actividades.Fecha_act.ToString(),
+                                DisplayHoraAsesoria = _actividades.Hora_act.ToString(),
+                                DisplayFechaIncidente = serviceAsesoria.GetEntity(_actividades.id_act).Fecha_incidente.ToString()
+                            };
+                            clienteTarjetaCompleta.StckAsesoria.Children.Add(stackAsesoria);
+                        }
                     }
                 }
+                return clienteTarjetaCompleta;
             }
-            return clienteTarjetaCompleta;
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VistaProfesional/Metodo/ClienteTarjetaCompleta: ", "Se ha producido un error en la carga de los datos. \n"+ex.Message);
+                ClienteTarjetaCompleta clienteTarjetaCompleta_Empty = new();
+                return clienteTarjetaCompleta_Empty;
+            } 
         }
         public void MostrarClientes()
         {
-            ServiceGerente serviceGerente = new();
-            foreach (Gerente _gerente in serviceGerente.GetEntities())
+            ServiceCliente serviceCliente = new();
+            try
             {
-                stckPanelTarjetas.Children.Add(CrearTarjetaCliente(_gerente.id_gerente));
+                foreach (Cliente _cliente in serviceCliente.GetEntities())
+                {
+                    if (_cliente.Profesional_id_prof == MainWindow.IdProfesional)
+                    {
+                        stckPanelTarjetas.Children.Add(CrearTarjetaCliente(_cliente.id_emp));
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO_MostrarClientes: ", "Se ha producido un error insesperado. \n" + ex.Message);
             }
         }
         public static TarjetaAsesoria CrearTarjetaAsesoria(int idActividad)
@@ -184,74 +184,102 @@ namespace Vistas
             ServiceProfesional serviceProfesional = new();
             ServiceGerente serviceGerente = new();
             ServiceAsesoria serviceAsesoria = new();
-            var idCliente = serviceActividad.GetEntity(idActividad).Cliente_id_emp;
-            var idProfesional = serviceActividad.GetEntity(idCliente).Prof_id_profe;
-
-            TarjetaAsesoria tarjetaAsesoria = new()
+            try
             {
-                DisplayNombreEmpresa = serviceCliente.GetEntity(idCliente).Nombre_emp,
-                DisplayRutEmpresa = serviceCliente.GetEntity(idCliente).Rut_emp,
-                DisplayNombreGerente = serviceGerente.GetEntity(idCliente).Nombre_gerente
-            };
-            string nombre = serviceProfesional.GetEntity(idProfesional).Nombre_prof;
-            string apellido = serviceProfesional.GetEntity(idProfesional).Apellido_prof;
-            string nombreProf = nombre + " " + apellido;
-            tarjetaAsesoria.DisplayNombreProfesional = nombreProf;
-            tarjetaAsesoria.DisplayRazon = serviceAsesoria.GetEntity(idActividad).Razon_ases;
-            tarjetaAsesoria.DisplayCaso = serviceAsesoria.GetEntity(idActividad).Estado_caso;
-            tarjetaAsesoria.DisplayDescripcionAsesoria = serviceAsesoria.GetEntity(idActividad).Descripcion;
-            return tarjetaAsesoria;
+                var idCliente = serviceActividad.GetEntity(idActividad).Cliente_id_emp;
+                var idProfesional = serviceActividad.GetEntity(idActividad).Prof_id_profe;
+                TarjetaAsesoria tarjetaAsesoria = new()
+                {
+                    DisplayNombreEmpresa = serviceCliente.GetEntity(idCliente).Nombre_emp,
+                    DisplayRutEmpresa = serviceCliente.GetEntity(idCliente).Rut_emp,
+                    DisplayNombreGerente = serviceGerente.GetEntity(idCliente).Nombre_gerente
+                };
+                string nombre = serviceProfesional.GetEntity(idProfesional).Nombre_prof;
+                string apellido = serviceProfesional.GetEntity(idProfesional).Apellido_prof;
+                string nombreProf = nombre + " " + apellido;
+                tarjetaAsesoria.DisplayNombreProfesional = nombreProf;
+                tarjetaAsesoria.DisplayRazon = serviceAsesoria.GetEntity(idActividad).Razon_ases;
+                tarjetaAsesoria.DisplayCaso = serviceAsesoria.GetEntity(idActividad).Estado_caso;
+                tarjetaAsesoria.DisplayDescripcionAsesoria = serviceAsesoria.GetEntity(idActividad).Descripcion;
+                return tarjetaAsesoria;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VistaProfesional/Metodo/CrearTarjetaAsesoria: ", "Se ha producido un error en la carga de los datos. \n" + ex.Message);
+                TarjetaAsesoria tarjetaAsesoria_Empty = new();
+                return tarjetaAsesoria_Empty;
+            }
+
         }
         public void MostrarAsesorias()
         {
             ServiceAsesoria serviceAsesoria = new();
-            foreach (Asesoria asesorias in serviceAsesoria.GetEntities())
+            try
             {
-                stckPanelTarjetas.Children.Add(CrearTarjetaAsesoria(asesorias.Actividad_id_act));
+                foreach (Asesoria asesorias in serviceAsesoria.GetEntities())
+                {
+                    stckPanelTarjetas.Children.Add(CrearTarjetaAsesoria(asesorias.Actividad_id_act));
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO_MostrarAsesorias: ", "Se ha producido un error insesperado. \n" + ex.Message);
             }
         }
         public static TarjetaSolicitud CrearTarjetSolicitud(int idSolicitud)
         {
-            TarjetaSolicitud tarjetaSolicitud = new();
+            
             ServiceSolicitud serviceSolicitud = new();
             ServiceCliente serviceCliente = new();
             ServiceGerente serviceGerente = new();
             ServiceProfesional serviceProfesional = new();
-            var idGerente = serviceSolicitud.GetEntity(idSolicitud).Gerente_id_gerente;
-            /*
-            Prueba de tarjeta por consola
-            var nombreProf = serviceProfesional.GetEntity(idSolicitud).Nombre_prof;
-            var nombre = serviceSolicitud.GetEntity(idSolicitud).Razon_soli;
-            var nombreGere = serviceGerente.GetEntity(idGerente).Nombre_gerente;
-            var nombreEmp = serviceCliente.GetEntity(idGerente).Nombre_emp;
-            var rutEmp = serviceCliente.GetEntity(idGerente).Rut_emp;
-            var razon = serviceSolicitud.GetEntity(idSolicitud).Razon_soli;
-            Debug.WriteLine(nombre +" Profesional "+nombreProf );
-            Debug.WriteLine(nombre + " Gerente " + nombreGere+" "+ idGerente);
-            Debug.WriteLine(nombre + " Empresa " + nombreEmp + " " + rutEmp);
-            Debug.WriteLine(razon + " janco ");
-            */
-            tarjetaSolicitud.DisplayNombreEmpresa = serviceCliente.GetEntity(idGerente).Nombre_emp;
-            tarjetaSolicitud.DisplayRutEmpresa = serviceCliente.GetEntity(idGerente).Rut_emp;
-            tarjetaSolicitud.DisplayNombreGerente = serviceGerente.GetEntity(idGerente).Nombre_gerente;
-            string nombre = serviceProfesional.GetEntity(idSolicitud).Nombre_prof;
-            string apellido = serviceProfesional.GetEntity(idSolicitud).Apellido_prof;
-            string nombreProf = nombre + " " + apellido;
-            tarjetaSolicitud.DisplayNombreProfesional = nombreProf;
-            tarjetaSolicitud.DisplayNombreProfesional = nombreProf;
-            tarjetaSolicitud.DisplayRazonSolicitud = serviceSolicitud.GetEntity(idSolicitud).Razon_soli;
-            tarjetaSolicitud.DisplayDescripcionSolicitud = serviceSolicitud.GetEntity(idSolicitud).Descripcion;
-            tarjetaSolicitud.DisplayFechaSolicitud = serviceSolicitud.GetEntity(idSolicitud).Fecha_CreacionSolicitud.ToString("dd/MM/yyyy");
-            tarjetaSolicitud.DisplayHoraSolicitud = new DateTime(serviceSolicitud.GetEntity(idSolicitud).Hora_CreacionSolicitud.Ticks).ToString("hh:mm tt");
-            return tarjetaSolicitud;
+            try
+            {
+                var idGerente = serviceSolicitud.GetEntity(idSolicitud).Gerente_id_gerente;
+                TarjetaSolicitud tarjetaSolicitud = new()
+                {
+                    idSolicitud = serviceSolicitud.GetEntity(idSolicitud).id_solicitud,
+                    DisplayNombreEmpresa = serviceCliente.GetEntity(idGerente).Nombre_emp,
+                    DisplayRutEmpresa = serviceCliente.GetEntity(idGerente).Rut_emp,
+                    DisplayNombreGerente = serviceGerente.GetEntity(idGerente).Nombre_gerente
+                };
+                string nombre = serviceProfesional.GetEntity(MainWindow.IdProfesional).Nombre_prof;
+                string apellido = serviceProfesional.GetEntity(MainWindow.IdProfesional).Apellido_prof;
+                string nombreProf = nombre + " " + apellido;
+                tarjetaSolicitud.DisplayNombreProfesional = nombreProf;
+                tarjetaSolicitud.DisplayNombreProfesional = nombreProf;
+                tarjetaSolicitud.DisplayRazonSolicitud = serviceSolicitud.GetEntity(idSolicitud).Razon_soli;
+                tarjetaSolicitud.DisplayDescripcionSolicitud = serviceSolicitud.GetEntity(idSolicitud).Descripcion;
+                tarjetaSolicitud.DisplayFechaSolicitud = serviceSolicitud.GetEntity(idSolicitud).Fecha_CreacionSolicitud.ToString("dd/MM/yyyy");
+                tarjetaSolicitud.DisplayHoraSolicitud = new DateTime(serviceSolicitud.GetEntity(idSolicitud).Hora_CreacionSolicitud.Ticks).ToString("hh:mm tt");
+                return tarjetaSolicitud;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VistaProfesional/Metodo/CrearTarjetSolicitud: ", "Se ha producido un error en la carga de los datos. \n" + ex.Message);
+                TarjetaSolicitud tarjetaSolicitud_Empty = new();
+                return tarjetaSolicitud_Empty;
+            }
         }
         public void MostrarSolicitudes()
         {
             ServiceSolicitud serviceSolicitud = new();
-            foreach (Solicitud _solicitudes in serviceSolicitud.GetEntities())
+            try
             {
-                stckPanelTarjetas.Children.Add(CrearTarjetSolicitud(_solicitudes.id_solicitud));
+                foreach (Solicitud _solicitudes in serviceSolicitud.GetEntities())
+                {
+                    if (_solicitudes.Profesional_id_prof == MainWindow.IdProfesional
+                        && _solicitudes.Estado_solicitud == "Pendiente")
+                    {
+                        stckPanelTarjetas.Children.Add(CrearTarjetSolicitud(_solicitudes.id_solicitud));
+                    }
+                }
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO_MostrarSolicitudes: ", "Se ha producido un error insesperado. \n" + ex.Message);
+            }
+
         }
         public static TarjetaRevision CrearTarjetaRevision(int idActividad)
         {
@@ -260,28 +288,34 @@ namespace Vistas
             ServiceCliente serviceCliente = new();
             ServiceGerente serviceGerente = new();
             ServiceProfesional serviceProfesional = new();
-            TarjetaRevision tarjetaRevision = new();
-            var nombreActMejora = serviceActMejora.GetEntity(idActividad).Nombre_act_mejora;
-            var fechaAct = serviceActividad.GetEntity(idActividad).Fecha_act.ToString();
-            var horaAct = serviceActividad.GetEntity(idActividad).Hora_act.ToString();
-            var idCliente = serviceActividad.GetEntity(idActividad).Cliente_id_emp;
-            var nombreCliente = serviceCliente.GetEntity(idCliente).Nombre_emp;
-            var nombreGerente = serviceGerente.GetEntity(idCliente).Nombre_gerente;
-            Debug.WriteLine(nombreActMejora + " es el día " + fechaAct + " a la hora " + horaAct);
-            Debug.WriteLine(idCliente + " es su id " + nombreCliente + " es su nombre " + " y tiene un gerente llamado " + nombreGerente);
-            
-            tarjetaRevision.DisplayNombreEmpresa = serviceCliente.GetEntity(idCliente).Nombre_emp;
-            tarjetaRevision.DisplayRutEmpresa = serviceCliente.GetEntity(idCliente).Rut_emp;
-            tarjetaRevision.DisplayNombreGerente = serviceGerente.GetEntity(idCliente).Nombre_gerente;
-            string nombre = serviceProfesional.GetEntity(idCliente).Nombre_prof;
-            string apellido = serviceProfesional.GetEntity(idCliente).Apellido_prof;
-            string nombreProf = nombre + " " + apellido;
-            tarjetaRevision.DisplayNombreProfesional = nombreProf;
-            tarjetaRevision.DisplayNombreActMejora = serviceActMejora.GetEntity(idActividad).Nombre_act_mejora;
-            tarjetaRevision.DisplayFechaActMejora = serviceActividad.GetEntity(idActividad).Fecha_act.ToString("dd/MM/yyyy");
-            tarjetaRevision.DisplayHoraActMejora = new DateTime(serviceActividad.GetEntity(idActividad).Hora_act.Ticks).ToString("hh:mm tt");
-            tarjetaRevision.DisplayDescripcionActMejora = serviceActMejora.GetEntity(idActividad).Descripcion_act_mejora.ToString();
-            return tarjetaRevision;
+            try
+            {
+                var idCliente = serviceActividad.GetEntity(idActividad).Cliente_id_emp;
+                var idProfesional = serviceActividad.GetEntity(idActividad).Prof_id_profe;
+                string nombre = serviceProfesional.GetEntity(idProfesional).Nombre_prof;
+                string apellido = serviceProfesional.GetEntity(idProfesional).Apellido_prof;
+                string nombreProf = nombre + " " + apellido;
+                TarjetaRevision tarjetaRevision = new()
+                {
+                    idActividadMejora = idActividad,
+                    DisplayNombreEmpresa = serviceCliente.GetEntity(idCliente).Nombre_emp,
+                    DisplayRutEmpresa = serviceCliente.GetEntity(idCliente).Rut_emp,
+                    DisplayNombreGerente = serviceGerente.GetEntity(idCliente).Nombre_gerente,
+                    DisplayNombreProfesional = nombreProf,
+                    DisplayNombreActMejora = serviceActMejora.GetEntity(idActividad).Nombre_act_mejora,
+                    DisplayFechaActMejora = serviceActividad.GetEntity(idActividad).Fecha_act.ToString("dd/MM/yyyy"),
+                    DisplayHoraActMejora = new DateTime(serviceActividad.GetEntity(idActividad).Hora_act.Ticks).ToString("HH:mm"),
+                    DisplayDescripcionActMejora = serviceActMejora.GetEntity(idActividad).Descripcion_act_mejora.ToString()
+                };
+                return tarjetaRevision;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VistaProfesional/Metodo/CrearTarjetaRevision: ", "Se ha producido un error insesperado. \n" + ex.Message);
+                TarjetaRevision tarjetaRevision_Empty = new();
+                return tarjetaRevision_Empty;
+            }
+
         }
         public void MostrarRevisiones()
         {
@@ -340,10 +374,53 @@ namespace Vistas
                 MessageBox.Show("Work in progress");
             }
         }
+        public void ActivarChecklist()
+        {
+            this.BtnCheckList.IsEnabled = true;
+        }
+        public void DesactivarChecklist()
+        {
+            this.BtnCheckList.IsEnabled = false;
+        }
         private void BtnCheckList_Click(object sender, RoutedEventArgs e)
         {
-            VentanaNuevoChecklist ventanaNuevoChecklist = new();
-            ventanaNuevoChecklist.ShowDialog();
+            ServiceCliente serviceCliente = new();
+            ServiceActividad serviceActividad = new();
+            ServiceChecklist serviceChecklist = new();
+            ServiceVisita serviceVisita = new();
+            ServiceProfesional serviceProfesional = new();
+            int? idChecklist = 0;
+            if (serviceVisita.GetEntity(idActividadSeleccionada).Checklist_id_check == null)
+            {
+                VentanaNuevoChecklist ventanaNuevoChecklist = new();
+                ventanaNuevoChecklist.idCliente = idClienteSeleccionado;
+                ventanaNuevoChecklist.idProfesional = idProfesionalPerfilActual;
+                ventanaNuevoChecklist.idActvidad_Seleccionada = idActividadSeleccionada;
+                ventanaNuevoChecklist.DisplayNombreCliente = serviceCliente.GetEntity(idClienteSeleccionado).Nombre_emp;
+                Actividad actividad = (serviceActividad.GetEntity(idActividadSeleccionada));
+                ventanaNuevoChecklist.DisplayFechaVisita = actividad.Fecha_act.ToString("dd/MM/yyyy");
+                ventanaNuevoChecklist.DisplayHoraVisita = actividad.Hora_act.ToString("HH:mm");
+                ventanaNuevoChecklist.ShowDialog();
+            }
+            else
+            {
+                foreach (Visita _visita in serviceVisita.GetEntities())
+                {
+                    if (_visita.Actividad_id_act == idActividadSeleccionada
+                        && _visita.Checklist_id_check != null)
+                    {
+                        idChecklist = serviceVisita.GetEntity(idActividadSeleccionada).Checklist_id_check;
+                    }
+                }
+                VentanaChecklist ventanaChecklist = new();
+                ventanaChecklist.lblNombreCliente.Content = serviceCliente.GetEntity(idClienteSeleccionado).Nombre_emp;
+                ventanaChecklist.lblTipoAct.Content = serviceActividad.GetEntity(idActividadSeleccionada).Tipo_actividad;
+                ventanaChecklist.lblFechaVisita.Content = serviceActividad.GetEntity(idActividadSeleccionada).Fecha_act.ToString("dd/MM/yyyy");
+                ventanaChecklist.lblHoraVisita.Content = serviceActividad.GetEntity(idActividadSeleccionada).Hora_act.ToString("HH:mm");
+                ventanaChecklist.lblContador.Content = serviceChecklist.GetEntity(idChecklist).Contador.ToString();
+                ventanaChecklist.AgregarCheckbox((int)idChecklist);
+                ventanaChecklist.ShowDialog();
+            }
         }
     }
 }

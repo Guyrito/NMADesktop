@@ -165,14 +165,15 @@
                              FontSize="12"
                              IsEnabled="False"
                              FontWeight="DemiBold"/>
-                    <mah:Tile Width="100"
+                    <mah:Tile x:Name="TileTomar"  
+                              Width="100"
                               Height="50" 
                               Margin="725,57,5,56"
                               Background="White"
                               Foreground="#FF4E16D1"
                               BorderBrush="#FF4E16D1"
                               BorderThickness="1"
-                              Content="TOMADA"></mah:Tile>
+                              Content="TOMAR" Click="TileTomar_Click"></mah:Tile>
                 </Grid>
             </DockPanel>
             <DockPanel x:Name="dockPanelInferior"  

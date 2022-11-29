@@ -51,14 +51,15 @@
                            Height="30" 
                            Margin="270,155,440,160"
                            HorizontalContentAlignment="Right"/>
-                    <DatePicker Width="150"
+                    <DatePicker x:Name="DatepickerVisita"
                                 Height="30" 
-                                Margin="405,102,255,213"
-                                SelectedDateFormat="Short"></DatePicker>
-                    <mah:TimePicker Width="150"
-                                    Height="30" Margin="405,155,255,160"
-                                    SelectedTimeFormat="Short"></mah:TimePicker>
-                    <mah:Tile
+                                Margin="405,102,230,213"
+                                SelectedDateFormat="Short"/>
+                    <mah:TimePicker x:Name="TimepickerVisita"
+                                    Height="30" Margin="405,155,230,160"
+                                    SelectedTimeFormat="Short"
+                                    Culture="es-CL"/>
+                    <mah:Tile x:Name="TileGuardar"  
                               Height="40"
                               Width="100"
                               HorizontalAlignment="Right" Margin="0,261,10,44"
@@ -66,7 +67,8 @@
                               BorderBrush="#FF4E16D1"
                               BorderThickness="1"
                               Content="GUARDAR"
-                              Foreground="#FF4E16D1"/>
+                              Foreground="#FF4E16D1" 
+                              Click="TileGuardar_Click"/>
                     <mah:Tile x:Name="TileAtras"
                               Height="20"
                               Width="100"

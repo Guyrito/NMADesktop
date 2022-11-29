@@ -27,7 +27,8 @@
             </StackPanel>
             <StackPanel DockPanel.Dock="Top"
                         Height="24">
-                <DatePicker Height="24"
+                <DatePicker x:Name="datePickerFechaIncidente"  
+                            Height="24"
                             Width="174" 
                             Text="{Binding DisplayFechaIncidente, TargetNullValue=''}"
                             HorizontalContentAlignment="Center"
@@ -40,7 +41,7 @@
             <StackPanel DockPanel.Dock="Left"
                         Height="24"
                         Width="87">
-                <DatePicker Height="24"  
+                <DatePicker x:Name="datePickerFechaAsesoria" Height="24"  
                             Width="87"
                             Text="{Binding DisplayFechaAsesoria, TargetNullValue=''}"
                             BorderThickness="0"
@@ -64,6 +65,7 @@
                                 SelectedTimeFormat="Short"
                                 IsEnabled="False"
                                 HorizontalContentAlignment="Center"
+                                Culture="es-CL"
                             />
             </StackPanel>
         </DockPanel>

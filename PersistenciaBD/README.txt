@@ -1,1 +1,0 @@
-#Recordar añadir un archivo de conexión ADO.net con el nombre de NMABD

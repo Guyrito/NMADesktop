@@ -7,7 +7,7 @@
                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  mc:Ignorable="d"
-                 Title="VentanaNuevaActMejora" 
+                 Title="NMA - Nueva actividad de mejora" 
                  Height="450" 
                  Width="830"
                  WindowStyle="None"
@@ -51,27 +51,48 @@
                     <Label Content="Nombre Act. de mejora"
                            Grid.Row="0"
                            Height="30" 
-                           Margin="186,18,480,23"/>
+                           Margin="0,2,675,35"
+                           HorizontalContentAlignment="Right"/>
                     <TextBox x:Name="txtboxNomActMejora"  
                              Height="10"
                              Grid.Row="0" 
-                             Margin="325,18,134,17"
+                             Margin="150,4,310,37"
                              Background="#F5F5F5"
                              BorderBrush="#E0E0E0"
                              BorderThickness="0,0,0,2"
-                             Foreground="Black"/>
+                             Foreground="Black"
+                             MaxLength="80"/>
                     <Label Content="Descripción:"
-                           Grid.Row="1"
                            Height="30" 
-                           Margin="245,7,480,58"/>
-                    <TextBox  x:Name="txtboxDescripcionActMejora"  
-                              Grid.Row="1" 
-                              Margin="325,7,134,20" 
-                              Grid.RowSpan="2"
+                           Margin="51,50,675,92" 
+                           Grid.RowSpan="2"
+                           HorizontalContentAlignment="Right"/>
+                    <TextBox  x:Name="txtboxDescripcionActMejora" 
+                              Margin="149,50,310,10" 
+                              Grid.RowSpan="3"
                               Background="#F5F5F5"
                               BorderBrush="#E0E0E0"
                               BorderThickness="0,0,0,2"
-                              Foreground="Black"/>
+                              Foreground="Black"
+                              TextWrapping="Wrap"/>
+                    <Label Content="Fecha Act Mejora"
+                           Width="130"
+                           Height="30" Margin="500,2,180,35"
+                           HorizontalContentAlignment="Right"/>
+                    <DatePicker x:Name="datePickerFechaActMejora"
+                                Height="30" 
+                                Margin="640,2,20,35"
+                                SelectedDateFormat="Short"/>
+                    <Label Content="Hora Act Mejora"
+                           Width="130"
+                           Height="30" Margin="500,50,180,92"
+                           HorizontalContentAlignment="Right" Grid.RowSpan="2"/>
+                    <mah:TimePicker x:Name="timePickerHoraActMejora"  
+                                    Height="30"
+                                    Width="150" 
+                                    Margin="640,50,20,92"
+                                    SelectedTimeFormat="Short" Grid.RowSpan="2"
+                                    Culture="es-CL"/>
                     <mah:Tile x:Name="TileGuardar"  
                               Grid.Row="2"
                               Height="40"

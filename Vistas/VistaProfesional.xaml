@@ -40,6 +40,15 @@
                            Width="60"
                            HorizontalAlignment="Left">
                     </Label>
+                    <Label x:Name="lblNombrePerfil"
+                           Width="200"
+                           Height="30"
+                           Grid.Column="2" Margin="62,4,71,3"
+                           Content="Ejemplo"
+                           Foreground="White"
+                           VerticalContentAlignment="Bottom"
+                           HorizontalContentAlignment="Right"
+                           FontWeight="DemiBold"></Label>
                     <mah:Tile x:Name="TileSalir"
                               Grid.Column="2"
                               Height="25"
@@ -48,6 +57,11 @@
                               HorizontalAlignment="Right" Click="TileSalir_Click">
                         <Image Source="Recursos/Iconos/BLANCO/icons8-exit-96.png"></Image>
                     </mah:Tile>
+                    <Image x:Name="ImgPerfil"  
+                           Width="30"
+                           Height="30"
+                           Source="Recursos/Iconos/BLANCO/icons8-administrator-male-50.png"
+                           Grid.Column="2" Margin="262,4,41,3"/>
                 </Grid>
             </StackPanel>
             <StackPanel DockPanel.Dock="Left"
@@ -134,13 +148,13 @@
                                         Height="auto"
                                         Width="auto"
                                         VerticalAlignment="Top">
-                                <local:ClienteTarjetaCompleta DisplayEmpresa="CCU"
+                                <!--local:ClienteTarjetaCompleta DisplayEmpresa="CCU"
                                                               DisplayRutEmpresa="90413000-1"
                                                               DisplayGerente="Willson Fisk"
                                                               DisplayProfNombre="Gabriel Boric"
                                                               DisplayMailGerente="will.fisk@gmail.com"
                                                               DisplayTelefonoEmpresa="(2) 2623 2181"
-                                                              DisplayDireccion="Panamericana 30000"></local:ClienteTarjetaCompleta>
+                                                              DisplayDireccion="Panamericana 30000"></local:ClienteTarjetaCompleta-->
                             </StackPanel>
                         </ScrollViewer>
                     </TabControl>
@@ -206,16 +220,23 @@
                                   Content="CHECKLIST" 
                                   Click="BtnCheckList_Click"
                                   Background="#FF4E16D1">
-
                         </mah:Tile>
                         <mah:Tile x:Name="BtnCasoAsesoria"
                                   Grid.Column="1"
                                   Height="30"
                                   Width="110"
                                   Content="CASO DE ASESORIA"
-                                  Background="#FF4E16D1"
-                                  >
+                                  Background="#FF4E16D1">
                         </mah:Tile>
+                        <!--Borrar-->
+                        <!--mah:Tile x:Name="BtnCheck"
+                                  Grid.Column="2"
+                                  Height="30"
+                                  Width="110"
+                                  Content="CHECK LIST"
+                                  Background="#FF4E16D1" Click="BtnCheck_Click">
+                        </mah:Tile-->
+                        <!--Borrar-->
                         <TextBox x:Name="txtboxBuscar" 
                                  HorizontalAlignment="Left" 
                                  Margin="870,66,0,0" 

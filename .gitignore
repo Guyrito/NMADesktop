@@ -23,15 +23,7 @@ mono_crash.*
 [Vv]istas/*.[Cc]ache
 
 # ConexionBD
-[Pp]ersistenciaBD/*.[Cc]onfig
-[Pp]ersistenciaBD/*.[Cc]ache
-[Pp]ersistenciaBD/*.[Cc]s
-[Pp]ersistenciaBD/*.[Ee]dmx
-[Pp]ersistenciaBD/*.[Ee].diagram
-[Pp]ersistenciaBD/*.[Tt]t
-[Pp]ersistenciaBD/*.[Cc]ontext
-[Pp]ersistenciaBD/*.[Cc]sproj
-[Pp]ersistenciaBD/[Pp]roperties/[Cc]s
+[Pp]ersistenciaBD/*.
 
 # Build results
 [Dd]ebug/

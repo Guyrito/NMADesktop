@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -27,17 +29,30 @@ namespace Vistas
         {
             InitializeComponent();
             DataContext = this;
+            FormatoCalendario();
         }
+        public static VistaProfesional objetoVistaProfesionalExistente { get; set; }
+        public int idCliente;
+        public int idProfesional;
+        public int idVisita_Actividad;
         public string DisplayFechaVisita { get; set; }
         public string DisplayHoraVisita { get; set; }
-
+        public void FormatoCalendario()
+        {
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-CL");
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("es-CL");
+            datePickerFechaVisita.Language = XmlLanguage.GetLanguage("es-CL");
+        }
         public void ToggleBtnVisita_Checked(object sender, RoutedEventArgs e)
         {
-            if (this.ToggleBtnVisita.IsChecked == true)
-            {
-                int var = 0;
-                Debug.WriteLine(var);
-            }
+            objetoVistaProfesionalExistente.idClienteSeleccionado = idCliente;
+            objetoVistaProfesionalExistente.idProfesionalPerfilActual = idProfesional;
+            objetoVistaProfesionalExistente.idActividadSeleccionada = idVisita_Actividad;
+            objetoVistaProfesionalExistente.ActivarChecklist();
+        }
+        private void ToggleBtnVisita_Unchecked(object sender, RoutedEventArgs e)
+        {
+            objetoVistaProfesionalExistente.DesactivarChecklist();
         }
     }
 }
