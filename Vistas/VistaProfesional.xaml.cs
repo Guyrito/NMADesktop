@@ -220,9 +220,19 @@ namespace Vistas
             ServiceActividad serviceActividad = new();
             try
             {
-                foreach (Asesoria asesorias in serviceAsesoria.GetEntities())
+                foreach(Actividad actividad in serviceActividad.GetEntities())
                 {
-                    stckPanelTarjetas.Children.Add(CrearTarjetaAsesoria(asesorias.Actividad_id_act));
+                    Debug.WriteLine(idProfesionalPerfilActual);
+                    if(actividad.Prof_id_profe == MainWindow.IdProfesional)
+                    {
+                        foreach (Asesoria asesorias in serviceAsesoria.GetEntities())
+                        {
+                            if (actividad.id_act == asesorias.Actividad_id_act)
+                            {
+                                stckPanelTarjetas.Children.Add(CrearTarjetaAsesoria(asesorias.Actividad_id_act));
+                            }
+                        }
+                    }
                 }
             }
             catch(Exception ex)
