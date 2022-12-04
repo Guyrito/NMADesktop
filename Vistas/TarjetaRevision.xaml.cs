@@ -1,4 +1,5 @@
-﻿using PersistenciaBD;
+﻿using Controladores;
+using PersistenciaBD;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +30,7 @@ namespace Vistas
             InitializeComponent();
             DataContext = this;
         }
-        public static VistaProfesional objetoVistaProfesionalExistente { get; set; }
+        public int idProf_Emisor { get; set; }
         public int idActividadMejora { get; set; }
         public string DisplayNombreEmpresa { get; set; }
         public string DisplayRutEmpresa { get; set; }
@@ -40,12 +41,25 @@ namespace Vistas
         public string DisplayHoraActMejora { get; set; }
         public string DisplayDescripcionActMejora { get; set; }
         public string CreateInformacionDeImportancia { get; set; }
-
+        public string DisplayProfAsignado { get; set; }
         private void GridPrincipal_Initialized(object sender, EventArgs e)
         {
             dockPanelMedio.Visibility = Visibility.Collapsed;
             dockPanelInferior.Visibility = Visibility.Collapsed;
             ucTarjetaRevision.Height.Equals(89.775);
+        }
+        private bool ValidarCampos()
+        {
+            if(txtBoxInfoExtra.Text == "")
+            {
+                MessageBox.Show("Se encontraron campos vacíos en la ventana, favor de rellenar todos los campos.", "Validación de campos");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+            return false;
         }
         private void BtnUpdDown_Click(object sender, RoutedEventArgs e)
         {
@@ -64,30 +78,135 @@ namespace Vistas
                 dockPanelInferior.Visibility = Visibility.Collapsed;
             }
         }
-
-        public int AsignacionID()
+        public void BloqueoTileTomar(int idPerfil, int idProf)
         {
-            int idProfesional = 0;
-            objetoVistaProfesionalExistente.idProfesionalPerfilActual = idProfesional;
-            Debug.WriteLine(idProfesional);
-            return idProfesional;
+            if(idPerfil == idProf)
+            {
+                TileTomar.IsEnabled = false;
+                TileCumplida.IsEnabled = false;
+                TileNoCumplida.IsEnabled = false;
+                txtBoxInfoExtra.IsEnabled = false;
+            }
         }
-
-        public void TomarActividadMejora(int idProfesionalRemitente, int idActividadSeleccionada)
+        public void ActividadTomada(string estado)
         {
-            using BD_NMAEntities contextActividadMejora = new();
-            contextActividadMejora.crudUpdate
+            if(estado == "Tomada")
+            {
+                TileTomar.Content = "Tomada";
+                TileTomar.IsEnabled = false;
+            }
+        }
+        public void ActualizarActMejora(int idProfesionalRemitente, int idActividadSeleccionada)
+
+        {
+            ServiceProfesional serviceProfesional = new();
+            string nombreprof = serviceProfesional.GetEntity(idProfesionalRemitente).Nombre_prof;
+            string apeprof = serviceProfesional.GetEntity(idProfesionalRemitente).Apellido_prof;
+            using BD_NMAEntities contextActividadMejoraRemitente = new();
+            contextActividadMejoraRemitente.crudUpdate
                 (
-                    nombreTabla: "actividad de mejora",
+                    nombreTabla: "Act_de_mejora",
                     nombreColumna: "Remitente",
                     nuevoDato: idProfesionalRemitente.ToString(),
                     id: idActividadSeleccionada
                 );
-            contextActividadMejora.SaveChanges();
+            contextActividadMejoraRemitente.SaveChanges();
+
+            using BD_NMAEntities contextActividadMejoraEstadoActividad = new();
+            contextActividadMejoraEstadoActividad.crudUpdate
+                (
+                    nombreTabla: "Act_de_mejora",
+                    nombreColumna: "Estado_actividad",
+                    nuevoDato: "Tomada",
+                    id: idActividadSeleccionada
+                );
+            contextActividadMejoraEstadoActividad.SaveChanges();
+
+            using BD_NMAEntities contextActividadMejoraEstadoAsignacion = new();
+            contextActividadMejoraEstadoAsignacion.crudUpdate
+                (
+                    nombreTabla: "Act_de_mejora",
+                    nombreColumna: "Estado_asignacion",
+                    nuevoDato: "Asignada a: "+nombreprof+" "+apeprof,
+                    id: idActividadSeleccionada
+                );
+            contextActividadMejoraEstadoAsignacion.SaveChanges();
+        }
+        public void GenerarReporte(string revision, int idActividadSeleccionada)
+        {
+            using BD_NMAEntities contextRevisionProfesional = new();
+            contextRevisionProfesional.crudUpdate
+                (
+                    nombreTabla: "Act_de_mejora",
+                    nombreColumna: "Revision_profesional",
+                    nuevoDato: revision,
+                    id: idActividadSeleccionada
+                );
+            contextRevisionProfesional.SaveChanges();
+        }
+        public void ActualizarPorReporte(int idActividadSeleccionada)
+        {
+            using BD_NMAEntities contextActividadMejoraEstadoActividad = new();
+            contextActividadMejoraEstadoActividad.crudUpdate
+                (
+                    nombreTabla: "Act_de_mejora",
+                    nombreColumna: "Estado_actividad",
+                    nuevoDato: "Revisada",
+                    id: idActividadSeleccionada
+                );
+            contextActividadMejoraEstadoActividad.SaveChanges();
         }
         private void TileTomar_Click(object sender, RoutedEventArgs e)
         {
-            AsignacionID();
+            MessageBoxResult messageBoxResult = MessageBox.Show("La actividad a continuación será tomada. \n¿Esta seguro(a) que desea tomar la actividad seleccionada?", "Pregunta de confirmación", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                ActualizarActMejora(MainWindow.IdProfesional, idActividadMejora);
+            }
+            else if (messageBoxResult == MessageBoxResult.No)
+            {
+            }
+        }
+
+        private void TileCumplida_Click(object sender, RoutedEventArgs e)
+        {
+            string reporte = "Cumplida: " + txtBoxInfoExtra.Text;
+            MessageBoxResult messageBoxResult = MessageBox.Show("La información del reporte a continuación será ingresada. \n¿Esta seguro(a) que la información ingresada es correcta?", "Pregunta de confirmación", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                if(ValidarCampos() == true)
+                {
+                    GenerarReporte(reporte, idActividadMejora);
+                    ActualizarPorReporte(idActividadMejora);
+                }
+                else if (ValidarCampos() == false)
+                {
+                    MessageBox.Show("No se pudo crear el reporte.");
+                }
+            }
+            else if (messageBoxResult == MessageBoxResult.No)
+            {
+            }
+        }
+        private void TileNoCumplida_Click(object sender, RoutedEventArgs e)
+        {
+            string reporte = "No Cumplida: " + txtBoxInfoExtra.Text;
+            MessageBoxResult messageBoxResult = MessageBox.Show("La información del reporte a continuación será ingresada. \n¿Esta seguro(a) que la información ingresada es correcta?", "Pregunta de confirmación", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                if(ValidarCampos() == true)
+                {
+                    GenerarReporte(reporte, idActividadMejora);
+                    ActualizarPorReporte(idActividadMejora);
+                }
+                else if (ValidarCampos() == false)
+                {
+                    MessageBox.Show("No se pudo crear el reporte.");
+                }
+            }
+            else if (messageBoxResult == MessageBoxResult.No)
+            {
+            }
         }
     }
 }

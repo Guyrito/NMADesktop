@@ -18,8 +18,8 @@ namespace PersistenciaBD
         public string Descripcion_act_mejora { get; set; }
         public int Actividad_id_act { get; set; }
         public string Revision_profesional { get; set; }
-        public string Emisor { get; set; }
-        public string Remitente { get; set; }
+        public Nullable<int> Prof_emisor_id { get; set; }
+        public Nullable<int> Prof_remitente_id { get; set; }
         public string Estado_actividad { get; set; }
         public string Estado_asignacion { get; set; }
     

@@ -52,24 +52,38 @@ namespace Vistas
         }
         public bool ValidarCampos(List<TextBox> listaTextBoxObj)
         {
-            string data;
-            foreach (TextBox elements in listaTextBoxObj)
+            TextBox data;
+            string datalast;
+            try
             {
-                data = elements.Text;
-                if(data == " "
-                    || listaTextBoxObj.Count == 0
-                    && data == " "
-                    && listaTextBoxObj.Count == 0)
+                int j = listaTextBoxObj.Count();
+                for (int i = 0; i < j; i++)
                 {
-                    MessageBox.Show("Se encontraron campos vacíos en la ventana o la lista está vacía, favor asegurarse de crear una lista y rellenar todos los campos correspondientes.", "Validación de campos");
-                    return false;
+                    data = listaTextBoxObj[i];
+                    datalast = listaTextBoxObj.Last().Text;
+                    if (data.Text == "")
+                    {
+                        MessageBox.Show("Se encontraron campos vacíos en la ventana o la lista está vacía, favor asegurarse de crear una lista y rellenar todos los campos correspondientes.", "Validación de campos");
+                        return false;
+                    }
+                    else if (datalast == "")
+                    {
+                        MessageBox.Show("Se encontraron campos vacíos en la ventana o la lista está vacía, favor asegurarse de crear una lista y rellenar todos los campos correspondientes.", "Validación de campos");
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
-                else
-                {
-                    return true;
-                }
+                return false;
             }
-            return false;
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VentanaNuevoChecklist/Metodo/ValidarCampos: ", "Se ha producido un error en la validación de los datos. \n" + ex.Message);
+                return false;
+            }
+            
         }
         private TextBox CreateItems( List<TextBox> listaTextBoxObj)
         {
@@ -120,38 +134,60 @@ namespace Vistas
         {
             ServiceChecklist serviceChecklist = new();
             int ultimoID = 0;
-            foreach (Checklist _checklist in serviceChecklist.GetEntities())
+            try
             {
-                if(ultimoID < _checklist.id_checklist)
+                foreach (Checklist _checklist in serviceChecklist.GetEntities())
                 {
-                    ultimoID = _checklist.id_checklist;
+                    if (ultimoID < _checklist.id_checklist)
+                    {
+                        ultimoID = _checklist.id_checklist;
+                    }
                 }
+                return ultimoID;
             }
-            return ultimoID;
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VentanaNuevoChecklist/Metodo/Ultimo_idChecklist: ", "Se ha producido un error, imposible obtener el último idChecklist. \n" + ex.Message);
+                return -1;
+            }
         }
         public void CrearChecklist()
         {
-            using BD_NMAEntities contextChecklist = new();
-            contextChecklist.CREATE_CHECKLIST
-                (
-                    aspectos: leerTextBoxList(listaItems).TrimEnd(),
-                    reporte: "Reporte pendiente",
-                    contador: 0
-                );
-            contextChecklist.SaveChanges();
+            try
+            {
+                using BD_NMAEntities contextChecklist = new();
+                contextChecklist.CREATE_CHECKLIST
+                    (
+                        aspectos: leerTextBoxList(listaItems),
+                        reporte: "Reporte pendiente",
+                        contador: 0
+                    );
+                contextChecklist.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VentanaNuevoChecklist/Metodo/CrearChecklist: ", "Se ha producido un error al crear el nuevo checklist. \n" + ex.Message);
+            }
+            
         }
         public void ActualizarVisita(int idChecklist, int idActividad)
         {
-            using BD_NMAEntities contextVisita = new();
-            contextVisita.crudUpdate
-                (
-                    nombreTabla: "Visita",
-                    nombreColumna: "Checklist_id_check",
-                    nuevoDato: idChecklist.ToString(),
-                    id: idActividad
-                );
-            Debug.WriteLine("Este es el idChecklist: " + idChecklist);
-            contextVisita.SaveChanges();
+            try
+            {
+                using BD_NMAEntities contextVisita = new();
+                contextVisita.crudUpdate
+                    (
+                        nombreTabla: "Visita",
+                        nombreColumna: "Checklist_id_check",
+                        nuevoDato: idChecklist.ToString(),
+                        id: idActividad
+                    );
+                contextVisita.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("ERROR_MODULO:VentanaNuevoChecklist/Metodo/ActualizarVisita: ", "Se ha producido un error al actualizar la visita. \n" + ex.Message);
+            }    
         }
         private void TileGuardar_Click(object sender, RoutedEventArgs e)
         {
@@ -176,10 +212,8 @@ namespace Vistas
         }
         private void TileAtras_Click(object sender, RoutedEventArgs e)
         {
-            ValidarCampos(listaItems);
-            //this.Close();
-        }
-
-        
+            //ValidarCampos(listaItems);
+            this.Close();
+        }  
     }
 }

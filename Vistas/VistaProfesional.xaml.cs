@@ -2,7 +2,10 @@
 using MahApps.Metro.Controls;
 using PersistenciaBD;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -78,13 +81,11 @@ namespace Vistas
             ServiceCliente serviceCliente = new();
             ServiceGerente serviceGerente = new();
             ServiceProfesional serviceProfesional = new();
+           
             try
             {
-                var idGerente = serviceGerente.GetEntity(idCliente).id_gerente;
-#pragma warning disable CS8604 // Posible argumento de referencia nulo
-                var idProfesional = serviceCliente.GetEntity(idCliente).Profesional_id_prof;
-#pragma warning restore CS8604 // Posible argumento de referencia nulo
-
+                int? idGerente = serviceGerente.GetEntity(idCliente).id_gerente;
+                int? idProfesional = serviceCliente.GetEntity(idCliente).Profesional_id_prof;
                 ClienteTarjetaCompleta clienteTarjetaCompleta = new()
                 {
                     ReceiveIdCliente = serviceCliente.GetEntity(idCliente).id_emp,
@@ -104,7 +105,8 @@ namespace Vistas
                 //---------------------------------------------------------------------------------------------
                 foreach (Actividad _actividades in serviceActividad.GetEntities())
                 {
-                    if (idCliente == _actividades.Cliente_id_emp)
+                    if (idCliente == _actividades.Cliente_id_emp
+                        && _actividades.Fecha_act > DateTime.Now)
                     {
                         var tipoAct = _actividades.Tipo_actividad;
                         if (tipoAct == "Visita")
@@ -129,7 +131,8 @@ namespace Vistas
                             };
                             clienteTarjetaCompleta.StckCapacitacion.Children.Add(stackCapacitacion);
                         }
-                        if (tipoAct == "Actividad de mejora")
+                        if (tipoAct == "Actividad de mejora" 
+                            && serviceActMejora.GetEntity(_actividades.id_act).Estado_actividad != "Revisada")
                         {
                             StackActMejora stackActMejora = new()
                             {
@@ -154,10 +157,10 @@ namespace Vistas
             }
             catch(Exception ex)
             {
-                MessageBox.Show("ERROR_MODULO:VistaProfesional/Metodo/ClienteTarjetaCompleta: ", "Se ha producido un error en la carga de los datos. \n"+ex.Message);
+                MessageBox.Show("ERROR_MODULO:VistaProfesional/Metodo/ClienteTarjetaCompleta: ", "Se ha producido un error en la carga de los datos. \n"+ ex.ToString());
                 ClienteTarjetaCompleta clienteTarjetaCompleta_Empty = new();
                 return clienteTarjetaCompleta_Empty;
-            } 
+            }
         }
         public void MostrarClientes()
         {
@@ -174,7 +177,7 @@ namespace Vistas
             }
             catch(Exception ex)
             {
-                MessageBox.Show("ERROR_MODULO_MostrarClientes: ", "Se ha producido un error insesperado. \n" + ex.Message);
+                MessageBox.Show("ERROR_MODULO_MostrarClientes: ", "Se ha producido un error insesperado. \n" + ex.ToString());
             }
         }
         public static TarjetaAsesoria CrearTarjetaAsesoria(int idActividad)
@@ -214,6 +217,7 @@ namespace Vistas
         public void MostrarAsesorias()
         {
             ServiceAsesoria serviceAsesoria = new();
+            ServiceActividad serviceActividad = new();
             try
             {
                 foreach (Asesoria asesorias in serviceAsesoria.GetEntities())
@@ -251,7 +255,8 @@ namespace Vistas
                 tarjetaSolicitud.DisplayRazonSolicitud = serviceSolicitud.GetEntity(idSolicitud).Razon_soli;
                 tarjetaSolicitud.DisplayDescripcionSolicitud = serviceSolicitud.GetEntity(idSolicitud).Descripcion;
                 tarjetaSolicitud.DisplayFechaSolicitud = serviceSolicitud.GetEntity(idSolicitud).Fecha_CreacionSolicitud.ToString("dd/MM/yyyy");
-                tarjetaSolicitud.DisplayHoraSolicitud = new DateTime(serviceSolicitud.GetEntity(idSolicitud).Hora_CreacionSolicitud.Ticks).ToString("hh:mm tt");
+                tarjetaSolicitud.DisplayHoraSolicitud = new DateTime(serviceSolicitud.GetEntity(idSolicitud).Hora_CreacionSolicitud.Ticks).ToString("HH:mm");
+                tarjetaSolicitud.DisplayNombreSolicitud = serviceSolicitud.GetEntity(idSolicitud).Nombre_solicitud;
                 return tarjetaSolicitud;
             }
             catch(Exception ex)
@@ -298,6 +303,7 @@ namespace Vistas
                 TarjetaRevision tarjetaRevision = new()
                 {
                     idActividadMejora = idActividad,
+                    idProf_Emisor = (int)serviceActMejora.GetEntity(idActividad).Prof_emisor_id,
                     DisplayNombreEmpresa = serviceCliente.GetEntity(idCliente).Nombre_emp,
                     DisplayRutEmpresa = serviceCliente.GetEntity(idCliente).Rut_emp,
                     DisplayNombreGerente = serviceGerente.GetEntity(idCliente).Nombre_gerente,
@@ -305,8 +311,11 @@ namespace Vistas
                     DisplayNombreActMejora = serviceActMejora.GetEntity(idActividad).Nombre_act_mejora,
                     DisplayFechaActMejora = serviceActividad.GetEntity(idActividad).Fecha_act.ToString("dd/MM/yyyy"),
                     DisplayHoraActMejora = new DateTime(serviceActividad.GetEntity(idActividad).Hora_act.Ticks).ToString("HH:mm"),
-                    DisplayDescripcionActMejora = serviceActMejora.GetEntity(idActividad).Descripcion_act_mejora.ToString()
+                    DisplayDescripcionActMejora = serviceActMejora.GetEntity(idActividad).Descripcion_act_mejora.ToString(),
+                    DisplayProfAsignado = serviceActMejora.GetEntity(idActividad).Estado_asignacion
                 };
+                tarjetaRevision.BloqueoTileTomar(MainWindow.IdProfesional, idProfesional);
+                tarjetaRevision.ActividadTomada(serviceActMejora.GetEntity(idActividad).Estado_actividad);
                 return tarjetaRevision;
             }
             catch(Exception ex)
@@ -322,7 +331,15 @@ namespace Vistas
             ServiceActMejora serviceActMejora = new();
             foreach (Act_de_mejora _acts_de_mejora in serviceActMejora.GetEntities())
             {
-                stckPanelTarjetas.Children.Add(CrearTarjetaRevision(_acts_de_mejora.Actividad_id_act));
+                if(_acts_de_mejora.Estado_actividad == "Revisada")
+                {
+
+                }
+                else if(_acts_de_mejora.Estado_actividad == "Tomada" 
+                    || _acts_de_mejora.Estado_actividad == "Sin asignación")
+                {
+                    stckPanelTarjetas.Children.Add(CrearTarjetaRevision(_acts_de_mejora.Actividad_id_act));
+                }
             }
         }
         private void TabItemOpciones1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

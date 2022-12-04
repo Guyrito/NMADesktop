@@ -17,13 +17,14 @@ namespace PersistenciaBD
         public int id { get; set; }
         public string usuario { get; set; }
         public string clave { get; set; }
-        public string rol { get; set; }
-        public Nullable<int> Profecional_id_prof { get; set; }
+        public int idrol { get; set; }
+        public Nullable<int> Profesional_id_prof { get; set; }
         public Nullable<int> Cliente_id_emp { get; set; }
-        public Nullable<int> Administrador_id_adm { get; set; }
+        public Nullable<int> Administrador_id_emp { get; set; }
     
         public virtual Administrador Administrador { get; set; }
         public virtual Cliente Cliente { get; set; }
         public virtual Profesional Profesional { get; set; }
+        public virtual Rol Rol { get; set; }
     }
 }

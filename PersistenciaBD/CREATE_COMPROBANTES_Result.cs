@@ -11,9 +11,11 @@ namespace PersistenciaBD
 {
     using System;
     
-    public partial class sp_helpdiagramdefinition_Result
+    public partial class CREATE_COMPROBANTES_Result
     {
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public Nullable<int> RESPONSE_NUMBER { get; set; }
+        public string RESPONSE_MESSAGE { get; set; }
+        public string RESPONSE_DATA { get; set; }
+        public string OBJECT_NAME { get; set; }
     }
 }

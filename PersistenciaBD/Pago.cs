@@ -14,21 +14,17 @@ namespace PersistenciaBD
     
     public partial class Pago
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Pago()
-        {
-            this.Comprobante = new HashSet<Comprobante>();
-        }
-    
         public int id_pago { get; set; }
         public string Estado_pago { get; set; }
         public string Mes_pago { get; set; }
         public decimal Valor_extra { get; set; }
         public decimal Total_a_pagar { get; set; }
-        public int Plan_id_plan { get; set; }
+        public Nullable<int> Comprobante_id_com { get; set; }
+        public Nullable<int> Plan_id_plan { get; set; }
+        public Nullable<int> Contrato_id_cont { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Comprobante> Comprobante { get; set; }
+        public virtual Comprobantes Comprobantes { get; set; }
+        public virtual Contrato Contrato { get; set; }
         public virtual Plan Plan { get; set; }
     }
 }

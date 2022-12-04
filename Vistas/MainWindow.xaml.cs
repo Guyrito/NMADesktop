@@ -42,23 +42,22 @@ namespace Vistas
 
                 foreach (Usuarios u in su.GetEntities())
                 {
-                    if (usuarioLogin.Text.Equals(u.usuario) && contrasenaLogin.Password.Equals(u.clave) && u.rol.Equals("ADMINISTRADOR"))
+                    if (usuarioLogin.Text.Equals(u.usuario) && contrasenaLogin.Password.Equals(u.clave) && u.idrol.Equals(1))
                     {
                         tipo++;
                     }
-                    else if (usuarioLogin.Text.Equals(u.usuario) && contrasenaLogin.Password.Equals(u.clave) && u.rol.Equals("PROFESIONAL"))
+                    else if (usuarioLogin.Text.Equals(u.usuario) && contrasenaLogin.Password.Equals(u.clave) && u.idrol.Equals(2))
                     {
                         tipo = tipo + 2;
                         foreach(Profesional _profesional in serviceProfesional.GetEntities())
                         {
-                            if(_profesional.id_prof == u.Profecional_id_prof)
+                            if(_profesional.id_prof == u.Profesional_id_prof)
                             {
                                 IdProfesional = _profesional.id_prof;
                             }
                         }
                     }
                 }
-
                 if (tipo == 1)
                 {
                     //Administrador admini = new Administrador();
@@ -69,7 +68,6 @@ namespace Vistas
                 {
                     VistaProfesional prof = new();
                     StackVisita.objetoVistaProfesionalExistente = prof;
-                    TarjetaRevision.objetoVistaProfesionalExistente = prof;
                     this.Close();
                     var Nombreprof = serviceProfesional.GetEntity(IdProfesional).Nombre_prof;
                     var Apellidoprof = serviceProfesional.GetEntity(IdProfesional).Apellido_prof;
@@ -89,18 +87,14 @@ namespace Vistas
                     await this.ShowMessageAsync("ERROR :", "Usuario no encontrado o Contraseña incorrecta");
                 }
             }
-
             catch (Exception ex)
             {
                 await this.ShowMessageAsync("ERROR: ", "Se ha producido un error al validar usuario. \n" + ex.Message);
             }
-
         }
-
         private void BotonIngresar_Click(object sender, RoutedEventArgs e)
         {
             ValidarLogin();
         }
-
     }
 }

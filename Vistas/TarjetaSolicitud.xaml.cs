@@ -37,6 +37,7 @@ namespace Vistas
         public string DisplayFechaSolicitud { get; set; }
         public string DisplayHoraSolicitud { get; set; }
         public string DisplayDescripcionSolicitud { get; set; }
+        public string DisplayNombreSolicitud { get; set;}
 
         private void GridPrincipal_Initialized(object sender, EventArgs e)
         {
@@ -82,7 +83,6 @@ namespace Vistas
             {
             }
         }
-
         private void tileRechazarSolicitud_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageBoxResult = MessageBox.Show("¿Está seguro de que desea rechazar esta solicitud? \nDe ser así no podrá visualizarla nuevamente.", "Pregunta de confirmación", MessageBoxButton.YesNo);

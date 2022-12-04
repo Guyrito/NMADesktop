@@ -20,12 +20,14 @@ namespace PersistenciaBD
             this.Pago = new HashSet<Pago>();
         }
     
-        public int plan_id { get; set; }
+        public int id_plan { get; set; }
         public string Tipo_plan { get; set; }
         public decimal Valor_plan { get; set; }
-        public int Contrato_id_contrato { get; set; }
+        public Nullable<int> Valor_ExtraChecklist { get; set; }
+        public Nullable<int> Valor_ExtraAsesoria { get; set; }
+        public Nullable<int> Valor_ExtraCapacitaciones { get; set; }
+        public Nullable<int> Valor_ExtraInforme { get; set; }
     
-        public virtual Contrato Contrato { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pago> Pago { get; set; }
     }

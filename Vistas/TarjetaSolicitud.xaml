@@ -95,6 +95,7 @@
                                Content="RAZÓN" Margin="0,1,0,0"></Label>
                         <TextBlock x:Name="txtblockRazonCaso"
                                    HorizontalAlignment="Center"
+                                   TextAlignment="Center"
                                    FontSize="15" 
                                    Height="50" 
                                    Width="140"
@@ -168,10 +169,20 @@
             <DockPanel x:Name="dockPanelCentral"  
                        Grid.Row="1">
                 <Grid>
-                    <TextBox x:Name="txtboxDescripcionCaso"  
-                             Height="170"
+                    <TextBox x:Name="txtboxNombreSolicitud"
                              Width="600" 
-                             Background="#F5F5F5" Margin="115,10,115,35"
+                             Background="#F5F5F5" Margin="115,10,115,224"
+                             mah:TextBoxHelper.Watermark="Descripción"
+                             Text="{Binding DisplayNombreSolicitud, TargetNullValue=''}"
+                             TextAlignment="Justify"
+                             VerticalContentAlignment="Top"
+                             HorizontalContentAlignment="Left"
+                             IsEnabled="False"
+                             FontSize="12"
+                             FontWeight="DemiBold"/>
+                    <TextBox x:Name="txtboxDescripcionCaso"
+                             Width="600" 
+                             Background="#F5F5F5" Margin="115,51,115,46"
                              mah:TextBoxHelper.Watermark="Descripción"
                              Text="{Binding DisplayDescripcionSolicitud, TargetNullValue=''}"
                              TextAlignment="Justify"
@@ -179,7 +190,7 @@
                              HorizontalContentAlignment="Left"
                              IsEnabled="False"
                              FontSize="12"
-                             FontWeight="DemiBold"></TextBox>
+                             FontWeight="DemiBold"/>
                 </Grid>
             </DockPanel>
             <Button x:Name="BtnUpdDown" 

@@ -17,16 +17,18 @@ namespace PersistenciaBD
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Contrato()
         {
-            this.Plan = new HashSet<Plan>();
+            this.Pago = new HashSet<Pago>();
         }
     
         public int id_contrato { get; set; }
         public System.DateTime Vencimiento_cont { get; set; }
         public byte[] Archivo_pdf { get; set; }
         public int Gerente_id_gerente { get; set; }
+        public Nullable<int> Plan_id_plan { get; set; }
+        public string Nombre_archivo { get; set; }
     
         public virtual Gerente Gerente { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Plan> Plan { get; set; }
+        public virtual ICollection<Pago> Pago { get; set; }
     }
 }

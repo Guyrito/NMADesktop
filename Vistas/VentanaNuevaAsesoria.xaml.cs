@@ -29,10 +29,14 @@ namespace Vistas
         {
             InitializeComponent();
             datePickerFechaAsesoria.DisplayDateStart = DateTime.Now.AddDays(2);
+            timePickerHoraAsesoria.SourceHours = horas;
+            timePickerHoraAsesoria.SourceMinutes = minutos;
             FormatoCalendario();
         }
         public int idCliente;
         public int idProfesional;
+        int[] horas = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+        int[] minutos = { 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 };
         public void FormatoCalendario()
         {
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-CL");
@@ -68,8 +72,7 @@ namespace Vistas
                     && _solicitud.Estado_solicitud == "Aceptada")
                 {
                     ComboBoxItem comboBoxItem = new();
-                    comboBoxItem.Content = _solicitud.Razon_soli;
-                    Debug.WriteLine(comboBoxItem.Content);
+                    comboBoxItem.Content = _solicitud.Nombre_solicitud;
                     ComboBoxAsesorias.Items.Add(comboBoxItem);
                 }
             }
@@ -80,7 +83,7 @@ namespace Vistas
             ServiceSolicitud serviceSolicitud = new();
             foreach (Solicitud _solicitud in serviceSolicitud.GetEntities())
             {
-                if (HeaderCombobox == _solicitud.Razon_soli)
+                if (HeaderCombobox == _solicitud.Nombre_solicitud)
                 {
                     TxtBoxDescripcionCaso.Text = _solicitud.Descripcion;
                     var date = _solicitud.Fecha_CreacionSolicitud;
@@ -107,39 +110,123 @@ namespace Vistas
             }
             return ultimoID;
         }
+        public static int Ultimo_valorContador(int idCliente)
+        {
+            ServiceActividad serviceActividad = new();
+            int ultimoContador = 0;
+            foreach (Actividad _actividad in serviceActividad.GetEntities())
+            {
+                if (ultimoContador < _actividad.Contador
+                    && idCliente == _actividad.Cliente_id_emp
+                    && _actividad.Tipo_actividad == "Asesoria"
+                    && _actividad.Fecha_act.Month == DateTime.Now.Month
+                    && _actividad.Fecha_act.Year == DateTime.Now.Year)
+                {
+                    ultimoContador = _actividad.Contador;
+                }
+            }
+            Debug.WriteLine(ultimoContador);
+            return ultimoContador;
+        }
+        private bool ValidadorDeActividades()
+        {
+            int contadorActividades = 0;
+            ServiceActividad serviceActividad = new();
+            contadorActividades = serviceActividad.GetEntities().Count;
+            if (contadorActividades >= 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        int valorContador = 0;
+        private bool ValidadorDeAsesorias(int idCliente)
+        {
+            ServiceActividad serviceActividad = new();
+            int actividades = serviceActividad.GetEntities().Count;
+            if (actividades == 0)
+            {
+                return true;
+            }
+            else if (actividades > 0)
+            {
+                int contador = 0;
+                foreach (Actividad _actividades in serviceActividad.GetEntities())
+                {
+                    if (_actividades.Tipo_actividad == "Asesoría"
+                        && _actividades.Cliente_id_emp == idCliente
+                        && _actividades.Fecha_act.Month == DateTime.Now.Month
+                        && _actividades.Fecha_act.Year == DateTime.Now.Year)
+                    {
+                        contador++;
+                    }
+                }
+                valorContador = contador;
+                if (contador < 10)
+                {
+                    return true;
+                }
+                else if (contador >= 10)
+                {
+                    MessageBox.Show("Llegaste al limite de asesorías");
+                    this.Close();
+                    return false;
+                }
+            }
+            return false;
+        }
         public void CrearActividad(int idProfesional, int idCliente)
         {
-            using BD_NMAEntities contextActividad = new();
-            contextActividad.CREATE_ACTIVIDAD
-                (
-                    fecha_act: datePickerFechaAsesoria.SelectedDate,
-                    hora_act: timePickerHoraAsesoria.SelectedDateTime,
-                    contador: 1,
-                    prof_id_profe: idProfesional,
-                    cliente_id_emp: idCliente,
-                    tipo_actividad: "Asesoría",
-                    estado: 0,
-                    retraso: 0
-                );
-            contextActividad.SaveChanges();
+            ServiceActividad serviceActividad = new();
+            if (ValidadorDeActividades() == false)
+            {
+                MessageBox.Show("ERROR: Algo salió mal al leer las actividades");
+            }
+            else if (ValidadorDeActividades() == true)
+            {
+                Debug.WriteLine("Podemos crear actividades");
+                if (ValidadorDeAsesorias(idCliente) == true)
+                {
+                    Debug.WriteLine("Podemos crear visitas");
+                    if (Ultimo_valorContador(idCliente) <= 10)
+                    {
+                        Debug.WriteLine("Tienes menos de 10 asesorías");
+                        Debug.WriteLine(valorContador);
+                        using BD_NMAEntities contextActividad = new();
+                        contextActividad.CREATE_ACTIVIDAD
+                            (
+                                fecha_act: datePickerFechaAsesoria.SelectedDate,
+                                hora_act: timePickerHoraAsesoria.SelectedDateTime,
+                                contador: valorContador + 1,
+                                prof_id_profe: idProfesional,
+                                cliente_id_emp: idCliente,
+                                tipo_actividad: "Asesoría",
+                                estado: 0,
+                                retraso: 0
+                            );
+                        contextActividad.SaveChanges();
+                    }
+                }
+            }
+            
         }
         public void CrearAsesoria(int idActividad)
         {
-            var razon_solicitud = ComboBoxAsesorias.SelectedItem.ToString().Split(':')[1].Trim();
+            var nombre = ComboBoxAsesorias.SelectedItem.ToString().Split(':')[1].Trim();
             int idSolicitud;
             ServiceSolicitud serviceSolicitud = new();
             ServiceProfesional serviceProfesional = new();
             foreach (Solicitud _solicitud in serviceSolicitud.GetEntities())
             {
-                if (razon_solicitud == _solicitud.Razon_soli)
+                if (_solicitud.Nombre_solicitud == nombre) //Filtro de creación
                 {
                     idSolicitud = _solicitud.id_solicitud;
                     using BD_NMAEntities contextAsesoria = new();
                     contextAsesoria.CREATE_ASESORIA
                         (
-                            razon_ases: razon_solicitud,
+                            razon_ases: nombre,
                             estado_caso: "Abierto",
-                            diligencia: "null",
+                            diligencia: TxtBoxDiligencia.Text,
                             evento_ases: "null",
                             solicitud_id_solicitud: idSolicitud,
                             asesoriaActividad_id_act: idActividad,
@@ -167,14 +254,16 @@ namespace Vistas
             MessageBoxResult messageBoxResult = MessageBox.Show("La información a continuación será ingresada. \n¿Esta seguro(a) que la información ingresada es correcta?", "Pregunta de confirmación", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                if(ValidarCampos() == true)
+                if(ValidarCampos() == true
+                    && ValidadorDeAsesorias(idCliente) == true)
                 {
                     CrearActividad(idProfesional, idCliente);
                     CrearAsesoria(Ultimo_idActividad());
                     MessageBox.Show("Asesoría creada correctamente.");
                     this.Close();
                 }
-                else if (ValidarCampos() == false)
+                else if (ValidarCampos() == false
+                    && ValidadorDeAsesorias(idCliente) == false)
                 {
                     MessageBox.Show("No se pudo crear la asesoría.");
                 }

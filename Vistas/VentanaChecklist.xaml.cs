@@ -40,8 +40,10 @@ namespace Vistas
             try
             {
                 string[] Aspectos = serviceChecklist.GetEntity(idChecklistExistente).Aspectos.Split(delimiterChars);
+                int contador = 0;
                 foreach (string Aspecto in Aspectos)
                 {
+                    contador++;
                     CheckBox checkBox = new()
                     {
                         Foreground = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
@@ -49,6 +51,7 @@ namespace Vistas
                     };
                     StackPanelChecklist.Children.Add(checkBox);
                 }
+                StackPanelChecklist.Children.RemoveAt(contador-1);
             }
             catch(Exception ex)
             {

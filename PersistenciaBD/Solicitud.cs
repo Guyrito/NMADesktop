@@ -15,6 +15,7 @@ namespace PersistenciaBD
     public partial class Solicitud
     {
         public int id_solicitud { get; set; }
+        public string Nombre_solicitud { get; set; }
         public string Razon_soli { get; set; }
         public Nullable<int> Profesional_id_prof { get; set; }
         public int Gerente_id_gerente { get; set; }

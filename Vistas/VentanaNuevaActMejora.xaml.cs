@@ -30,24 +30,28 @@ namespace Vistas
         {
             InitializeComponent();
             datePickerFechaActMejora.DisplayDateStart = DateTime.Now.AddDays(2);
+            timePickerHoraActMejora.SourceHours = horas;
+            timePickerHoraActMejora.SourceMinutes = minutos;
             FormatoCalendario();
         }
         public int idCliente;
         public int idProfesional;
-        public void FormatoCalendario()
+        int[] horas = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+        int[] minutos = { 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 };
+        private void FormatoCalendario()
         {
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-CL");
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("es-CL");
             datePickerFechaActMejora.Language = XmlLanguage.GetLanguage("es-CL");
         }
-        public bool ValidarCampos()
+        private bool ValidarCampos()
         {
-            if(txtboxNomActMejora.Text == " " 
-                || txtboxDescripcionActMejora.Text == " "
+            if(txtboxNomActMejora.Text == "" 
+                || txtboxDescripcionActMejora.Text == ""
                 || datePickerFechaActMejora.SelectedDate == null
                 || timePickerHoraActMejora.SelectedDateTime == null
-                && txtboxNomActMejora.Text == " "
-                && txtboxDescripcionActMejora.Text == " "
+                && txtboxNomActMejora.Text == ""
+                && txtboxDescripcionActMejora.Text == ""
                 && datePickerFechaActMejora.SelectedDate == null
                 && timePickerHoraActMejora.SelectedDateTime == null)
             {
@@ -59,7 +63,7 @@ namespace Vistas
                 return true;
             }
         }
-        public static int Ultimo_idActividad()
+        private static int Ultimo_idActividad()
         {
             ServiceActividad serviceActividad = new();
             int ultimoID = 0;
@@ -72,7 +76,7 @@ namespace Vistas
             }
             return ultimoID;
         }
-        public void CrearActividad(int idProfesional, int idCliente)
+        private void CrearActividad(int idProfesional, int idCliente)
         {
             using BD_NMAEntities contextActividad = new();
             contextActividad.CREATE_ACTIVIDAD
@@ -88,7 +92,7 @@ namespace Vistas
                 );
             contextActividad.SaveChanges();
         }
-        public void CrearActDeMejora(int idActividad, int idProfesional)
+        private void CrearActDeMejora(int idActividad, int idProfesional)
         {
             using BD_NMAEntities contextActMejora = new();
             contextActMejora.CREATE_ACT_DE_MEJORA
@@ -97,13 +101,14 @@ namespace Vistas
                 descripcion_act_mejora: txtboxDescripcionActMejora.Text,
                 actividad_id_act: idActividad,
                 revision_profesional: "Revisión pendiente",
-                emisor: idProfesional.ToString(),
-                remitente: null,
+                prof_emisor_id: idProfesional,
+                prof_remitente_id: null,
                 estado_actividad: "Sin asignación",
                 estado_asignacion: "Pendiente"
             );
             contextActMejora.SaveChanges();
         }
+        
         private void TileGuardar_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult messageBoxResult = MessageBox.Show("La información a continuación será ingresada. \n¿Esta seguro(a) que la información ingresada es correcta?", "Pregunta de confirmación", MessageBoxButton.YesNo);

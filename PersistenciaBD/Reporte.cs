@@ -10,12 +10,14 @@
 namespace PersistenciaBD
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class CREATE_COMPROBANTE_Result
+    public partial class Reporte
     {
-        public Nullable<int> RESPONSE_NUMBER { get; set; }
-        public string RESPONSE_MESSAGE { get; set; }
-        public string RESPONSE_DATA { get; set; }
-        public string OBJECT_NAME { get; set; }
+        public int Id_reporte { get; set; }
+        public string Nombre_reporte { get; set; }
+        public Nullable<System.DateTime> Fecha_reporte { get; set; }
+        public byte[] ArchivoReporte { get; set; }
+        public string Extension { get; set; }
     }
 }

@@ -29,10 +29,14 @@ namespace Vistas
         {
             InitializeComponent();
             datePickerFechaCapacitacion.DisplayDateStart = DateTime.Now.AddDays(14);
+            timePickerHoraCapacitacion.SourceHours = horas;
+            timePickerHoraCapacitacion.SourceMinutes = minutos;
             FormatoCalendario();
         }
         public int idCliente;
         public int idProfesional;
+        int[] horas = { 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+        int[] minutos = { 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 };
         public void FormatoCalendario()
         {
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-CL");
@@ -41,22 +45,23 @@ namespace Vistas
         }
         public bool ValidarCampos()
         {
-            if(txtBoxNombreCapacitacion.Text == " "
-                || txtBoxCantidadAsistentes.Text == " "
-                || txtBoxDescripcion.Text == " "
-                || txtBoxMateriales.Text == " "
+            if(txtBoxNombreCapacitacion.Text == ""
+                || txtBoxCantidadAsistentes.Text == ""
+                || txtBoxDescripcion.Text == ""
+                || txtBoxMateriales.Text == ""
                 || datePickerFechaCapacitacion.SelectedDate == null
                 || timePickerHoraCapacitacion.SelectedDateTime == null
-                && txtBoxNombreCapacitacion.Text == " "
-                && txtBoxCantidadAsistentes.Text == " "
-                && txtBoxDescripcion.Text == " "
-                && txtBoxMateriales.Text == " "
+                && txtBoxNombreCapacitacion.Text == ""
+                && txtBoxCantidadAsistentes.Text == ""
+                && txtBoxDescripcion.Text == ""
+                && txtBoxMateriales.Text == ""
                 && datePickerFechaCapacitacion.SelectedDate == null
                 && timePickerHoraCapacitacion.SelectedDateTime == null)
             {
                 MessageBox.Show("Se encontraron campos vacíos en la ventana, favor de rellenar todos los campos.", "Validación de campos");
                 return false;
             }
+            else
             {
                 return true;
             }

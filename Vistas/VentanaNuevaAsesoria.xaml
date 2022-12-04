@@ -49,7 +49,7 @@
                         <RowDefinition Height="154*"/>
                     </Grid.RowDefinitions>
                     <ComboBox x:Name="ComboBoxAsesorias" 
-                              Height="30" Margin="125,2,334,36"
+                              Height="30" Margin="125,2,405,36"
                               Background="#F5F5F5"
                               BorderBrush="#E0E0E0"
                               BorderThickness="0,0,0,2"
@@ -66,7 +66,7 @@
                            Margin="25,50,700,94" 
                            RenderTransformOrigin="0.519,-0.14" Grid.RowSpan="2"/>
                     <TextBox x:Name="TxtBoxDescripcionCaso"  
-                             Margin="125,50,334,171" 
+                             Margin="125,50,405,171" 
                              Grid.RowSpan="3"
                              Background="#F5F5F5"
                              BorderBrush="#E0E0E0"
@@ -83,7 +83,7 @@
                            RenderTransformOrigin="0.519,-0.14" Grid.Row="2"/>
                     <DatePicker x:Name="datePickerFechaAsesoria"
                                 Height="30" 
-                                Margin="640,2,20,36"
+                                Margin="513,2,24,36"
                                 SelectedDateFormat="Short"/>
                     <Label x:Name="LblHoraSolicitud"  
                            Content="Hora de creación de la solicitud"
@@ -92,8 +92,7 @@
                            Margin="-9,85,614,56" 
                            RenderTransformOrigin="0.519,-0.14" Grid.Row="2"/>
                     <Label Content="Fecha Asesoria"
-                           Width="130"
-                           Height="30" Margin="499,2,181,36"
+                           Height="30" Margin="414,4,302,34"
                            HorizontalContentAlignment="Right"/>
                     <DatePicker x:Name="datePickerFechaCreacionSolicitud"
                                 Height="30"
@@ -102,8 +101,7 @@
                                 IsEnabled="False"
                                 />
                     <Label Content="Hora Asesoria"
-                           Width="130"
-                           Height="30" Margin="499,50,181,94"
+                           Height="30" Margin="414,50,302,94"
                            HorizontalContentAlignment="Right" Grid.RowSpan="2"/>
                     <mah:TimePicker x:Name="timePickerHoraCreacionSolicitud"  
                                     Height="30"
@@ -114,11 +112,24 @@
                                     IsEnabled="False"
                                     SelectedDateTime="{Binding DisplayHoraCreacionSolicitud, TargetNullValue=''}"/>
                     <mah:TimePicker x:Name="timePickerHoraAsesoria"  
-                                    Height="30"
-                                    Width="150" 
-                                    Margin="640,50,20,94"
+                                    Height="30" 
+                                    Margin="513,50,24,94"
                                     SelectedTimeFormat="Short" Grid.RowSpan="2"
                                     Culture="es-CL"/>
+                    <Label Content="Diligencia"
+                           Height="30" 
+                           HorizontalContentAlignment="Right"
+                           Margin="414,26,302,50" 
+                           RenderTransformOrigin="0.519,-0.14" Grid.Row="1"/>
+                    <TextBox x:Name="TxtBoxDiligencia"  
+                             Margin="513,26,24,127"
+                             Background="#F5F5F5"
+                             BorderBrush="#E0E0E0"
+                             BorderThickness="0,0,0,2"
+                             Foreground="Black"
+                             IsEnabled="true"
+                             Text="{Binding DisplayDiligencia, TargetNullValue=''}"
+                             TextWrapping="Wrap" Grid.Row="1" Grid.RowSpan="2"/>
                     <mah:Tile x:Name="TileGuardar"  
                               Grid.Row="2"
                               Height="40"
